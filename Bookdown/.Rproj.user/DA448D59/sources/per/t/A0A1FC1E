@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1541107952868.000,
+    "dirty" : false,
+    "encoding" : "ISO-8859-1",
+    "folds" : "",
+    "hash" : "1649435198",
+    "id" : "A0A1FC1E",
+    "lastKnownWriteTime" : 1541108542,
+    "last_content_update" : 1541108542814,
+    "path" : "~/Documents/Packages/mixOmics/Bioconductor/Vignette/Bookdown/02-get-started.Rmd",
+    "project_path" : "02-get-started.Rmd",
+    "properties" : {
+        "cursorPosition" : "13,70",
+        "ignored_words" : "mixOmics,RStudio,omics\n",
+        "scrollLine" : "12"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

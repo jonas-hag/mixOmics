@@ -1,0 +1,185 @@
+# Multi-block discriminant analysis (DIABLO) {#diablo}
+
+```{r echo=FALSE, message=FALSE}
+library(mixOmics)
+```
+
+**DIABLO** stands for: **D**ata **I**ntegration **A**nalysis for **B**iomarker discovery using a **L**atent component method for **O**mics studies!
+
+## Biological question
+
+> *I want to identify a highly correlated multi-'omics signature discriminating subgroups of samples.*
+
+## The breast.TCGA data set
+
+The `breast.TCGA` is a list containing two data sets, `data.train` and `data.test` which both include:
+
+- `miRNA` data frame with 150 (70) rows and 184 columns in the training (test) data set. The expression levels of 184 miRNA.
+
+- `mRNA` data frame with 150 (70) rows and 520 columns in the training (test) data set. The expression levels of 200 mRNA.
+
+- `protein` data frame with 150 (70) rows and 142 columns in the training data set only. The abundance of 142 proteins.
+
+- `subtype` a factor indicating the brerast cancer subtypes in the training (length of 150) and test (length of 70) sets.
+
+More details are available with `?breast.TCGA`.
+
+To illustrate DIABLO, we try to unravel the relationships between the expression levels of miRNA, mRNA and the abundance of proteins while discriminating the subtypes of breast cancer.
+
+## Principle of the method
+
+The core DIABLO method builds on the Generalised Canonical Correlation Analysis [@Ten11], which contrary to what its name suggests, generalises PLS for multiple matching datasets, and the sparse sGCCA method [@Ten14]. Starting from the R package RGCCA from Tenenhaus et al, we subtantially improved the method and code for different types of analyses, including unsupervised N-integration (`block.pls`, `block.spls`) and supervised analyses (`block.plsda`, `block.splsda`).
+
+The aim of N-integration with our sparse methods is to identify correlated (or co-expressed) variables measured on heterogeneous data sets which also explain the categorical outcome of interest (supervised analysis). The multiple data integration task is not trivial, as the analysis can be strongly affected by the variation between manufacturers or 'omics technological platforms despite being measured on the same biological samples. In addition, to avoid a 'fishing omics expedition', it is better to analyse each data separately first to understand well where the major sources of variation come from, and also to guide specifically the integration process.
+
+See [@Sin16] for more details.
+
+## Quick start
+
+Quick start focuses on the sparse version of DIABLO as it is related to the question the most frequently addressed by `mixOmics` users to identify potential biomarkers. It is also a more sensible way to address such a problem, because of the potential high number of variables involved in each data set. 
+
+As the number of data sets to deal with is not set a priori, the input object must be a list as well as the argument `keepX`.
+
+```{r}
+data(breast.TCGA)
+# extract training data
+X <- list(mRNA = breast.TCGA$data.train$mrna, 
+            miRNA = breast.TCGA$data.train$mirna, 
+            protein = breast.TCGA$data.train$protein)
+Y <- breast.TCGA$data.train$subtype
+list.keepX <- list(mRNA = rep(10, 2), miRNA = rep(10,2), protein = rep(5, 2))
+```
+
+Once done, the following is as usual.
+
+```{r}
+MyResult.diablo <- block.splsda(X, Y, keepX=list.keepX)
+plotIndiv(MyResult.diablo)
+plotVar(MyResult.diablo)
+```
+
+By default, `block.splsda` consider `ncomp=2` that is why the `list.keepX` object is set with 2 replicates in `rep(10,2)`.
+
+The individual plots display as many plots as the number of data sets. They correspond to the sub-spaces spanned by the variables in each data set. As DIABLO is a supervised method, samples are plotted in different colors depending on their categorie. But many arguments are available in `plotIndiv` to customize plots.
+
+The variable plot suggest some relationships between proteins, mRNA and miRNA but customizing this plot using optional arguments of `plotVar` is mandatory to extract meaningful information from a biological point of view.
+
+We focused here on the sparse version as we aim at determining a multi-'omics signature and this signature should not involved too many variables. But, the non sparse version can be run with `block.plsda`.
+
+```{r eval=FALSE}
+MyResult.diablo2 <- block.plsda(X, Y)
+```
+
+## To go further
+
+### Customize plots
+
+Regarding variable plots, as every variable names cannot be read, the labels can be omitted for some choosen datasets. For instance, the names of proteins are the one to be displayed in the following plot.
+```{r}
+plotVar(MyResult.diablo, var.names = c(FALSE, FALSE, TRUE),
+        legend=TRUE, pch=c(16,16,1))
+```
+
+
+Individual plots can be customized in the usual way.
+```{r fig.show='hide'}
+plotIndiv(MyResult.diablo, ind.names = FALSE, legend=TRUE, cex=c(1,2,3))
+```
+
+### Other meaningful plots
+
+A global overview of the relationships between the data sets can be represented using the `plotDiablo` function. It represents the samples in a pairwise way considering the first component spanned from each data set and indicating in a the symetric location the correlation obtained between these two first components.
+ 
+```{r}
+plotDiablo(MyResult.diablo)
+```
+
+Here, the plot seems to indicate higher relations between mRNA and miRNA, between mRNA and proteins and lower relations between miRNA and proteins. The same plot can be produced for the second components using the optional argument `ncomp=2`.
+
+```{r eval=FALSE}
+plotDiablo(MyResult.diablo, ncomp=2)
+```
+
+The function `circosPlot` can also be used to display the variable relations among different blocks. It can be viewed as the network whose nodes are located on a circle. 
+
+```{r}
+circosPlot(MyResult.diablo, cutoff=0.7)
+```
+
+The `cimDiablo` function is a clustered image map specifically implemented to represent the multi-'omics molecular signature expression for each sample.
+
+```{r eval=FALSE}
+cimDiablo(MyResult.diablo)
+```
+
+The `plotLoadings` function visualises the loading weights of each selected variables on each component (default is `comp=1`) and each data set. The color indicates the class in which the variable has the maximum level of expression (`contrib = "max"`) or minimum (`contrib ="min"`), on average (`method="mean"`) or using the median (`method`="median"`). 
+
+```{r}
+plotLoadings(MyResult.diablo, contrib = "max")
+plotLoadings(MyResult.diablo, comp=2, contrib = "max")
+```
+
+The function `plotArrow` is also available for `block.splsda` objects but the interpretation of such a plot can be highly difficult as, for each sample, it links the coordinates in each of the spanned sub-spaces from a centroid location.
+
+```{r eval=FALSE}
+plotArrow(MyResult.diablo)
+```
+
+### Tuning parameters
+
+The way the data sets are supposed to be linked can be changed using the `design` argument. Default design is the following one:
+
+```{r}
+MyResult.diablo$design
+```
+
+And it can be changed providing a matrix:
+```{r}
+MyDesign <- matrix(c(0  ,  0.1, 0.3,
+                     0.1,  0  , 0.9,
+                     0.3,  0.9, 0  ),
+                   byrow=TRUE,
+                   ncol = length(X), nrow = length(X),
+                 dimnames = list(names(X), names(X)))
+MyResult.diablo.design <- block.splsda(X, Y, keepX=list.keepX, design=MyDesign)
+MyResult.diablo.design$design
+```
+
+Design matrix has changed to include Y; each block will be linked to Y.
+
+```{r}
+plotDiablo(MyResult.diablo.design)
+```
+
+### Other sources
+
+
+Other examples are provided at the end of the manual of the `block.plsda` function. Run 
+```{r eval=FALSE}
+example(block.plsda)
+```
+to have a look  on them.
+
+Complements are also available on the page dedicated to Diablo on the mixOmics website <http://www.mixomics.org/mixdiablo>.
+
+## FAQ
+
+* When performing a multi-block analysis, how to choose my design?
+
+    Rely on your knowledge of the data first, and do a few tries on a non sparse DIABLO model (no tuning, no keepX), then look at the classification performance before choosing your final design.
+
+* I have a small number of samples (n < 10), is it worth doing the tuning?
+
+    Probably not! Try with a few `keepX` values and look at the graphical plots, do they make sense? With n small you can adopt an exploratory approach with ni performance assessment.
+
+* During `tune / perf` the code broke down (`system computationally singular`).
+
+    Check that the M value for your M-fold is not too high compared to n. Try leave-one-out instead and make sure ncomp is not too large. You are running on empty matrices!
+
+* Not happy! My tuning step indicated the selection of only 1 miRNA...
+
+    Choose a grid of keepX values that starts at a higher value (e.g. 5). The algorithm found an optimum with only one variable, either because it is highly discriminatory or because the data are noisy, but it does not stop you from trying for more.
+
+* My Y is continuous, what can I do?
+
+    You can perform a multi-omics regression with `block.spls`. We have not found a way yet to tune the results though, so adopt an exploratory approach or back yourself up with down stream analyses once you have identified your list of highly correlated features.

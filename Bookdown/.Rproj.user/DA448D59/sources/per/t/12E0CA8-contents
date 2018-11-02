@@ -1,0 +1,215 @@
+% !Rnw root = mixOmics-material-oneday.Rnw
+
+
+\section{What is \texttt{mixOmics}?}
+\R{mixOmics} is a freely available R package currently implementing nineteen methodologies for the exploration and the integration of biological data sets. Note that that mixOmics is not limited to biological data only and can be applied to other type of data where integration is required. A strong focus is given to graphical representation to better understand the relationships between omics data and visualize the correlation structure at the sample and variable levels. \\
+
+Besides the \R{R} package, the \R{mixOmics} project includes:
+\begin{itemize} \itemsep0em 
+  \item a website with extensive tutorials: \url{http://www.mixOmics.org}
+  %\item a Beta version of a web-interface: \url{http://mixomics.qfab.org/}
+  %\item a beta version of a shiny web-interface (currently: single data set analysis): \\
+  % \url{http://mixomics-projects.di.uq.edu.au/Shiny/}
+\end{itemize}
+
+\noindent
+\textbf{Want to be part of the mixOmics community?}
+Subscribe to our newsletter mailing list by simply sending an e-mail with no subject of body to: \\
+\url{mixomics-news-subscribe@math.univ-toulouse.fr} \footnote{You can unsubscribe at any time by sending an e-mail to {\footnotesize \url{mixomics@math.univ-toulouse.fr}}}. \\
+Follow us on \includegraphics[width=0.02\paperwidth]{Figures/Title/Twitter}: \textcolor{blue}{@ mixOmics\_team}
+
+\noindent
+\textbf{Any question or feedback?} If you experience a bug, you can notify us on \url{https://github.com/mixOmicsTeam/mixOmics/issues}. For other questions, emails us at \url{mixomics@math.univ-toulouse.fr}.
+
+\section{Why multivariate methods?}
+Single `omics data analysis does not provide enough information to give a deep understanding of a biological system. We can obtain a more precise picture of a system by combining multiple `omics data sets. In \R{mixOmics}  we propose a whole range of multivariate methods that we developed and validated on many biological studies. \\
+Multivariate methods are well suited to large `omics data sets where the number of variables (e.g. genes, proteins, metabolites) is much larger than the number of samples (patients, cells, mice). They have the appealing properties of reducing the dimension of the data by using instrumental variables (`components'), which are defined as combination of all variables. Those components are then used to produce useful graphical outputs that enable better understanding of  the relationships and correlation structure between the different data sets that are integrated. We have further developed sparse multivariate models to identify the key variables that are highly correlated, or explain the biological outcome of interest. The identified variables are then more amenable to `classical' univariate statistical inference and the generation of novel biological hypotheses.
+
+
+\section{\texttt{mixOmics} philosophy}
+The multivariate statistical methods implemented in \R{mixOmics} aim at summarizing the main characteristics of the data while capturing the largest sources of variation in the data. There is an underlying stastistical model for each method, as detailed in the methods section, however those models radically differ from univariate formulations as they do not test one variable at a time, or produce p-values! In that sense, multivariate methods are mostly considered as `exploratory' methods as they do not enable statistical inference, however, the \textit{biological question matters} in order to apply the suitable multivariate method, as we will emphasize during the workshop. \\
+The graphical outputs resulting from projecting the data into a much smaller subspace than the original data space enable to:
+\begin{itemize}
+  \item assess if the separation of the samples is in agreement with a phenotype of interest (discrete or continuous outcome),
+  \item identify potential sample outliers,
+  \item reveal the effect of confounding variables, laboratory or platform effects.
+\end{itemize}
+In addition, a strong focus is given to statistical data integration on matching data sets (i.e. experiments performed on the same individual or samples), where the aim is to maximise the common information between those data sets.  The novel integrative multivariate methodologies that we propose were specifically developed for large data sets and the sparse approaches in particular allow for the identification of key features amongst the thousands that are measured.
+
+
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[angle=0,width=1\textwidth]{Figures/Intro/framework-global}
+\end{center}
+\caption{Global framework of \R{mixOmics} methods. \label{fig:frameworkV6}}
+\end{figure}
+
+
+
+\section{How do I cite \texttt{mixOmics}?}
+Each method has an associated methods paper (see below). We also recently published a  generic software article \citep{mixOmics}: \\
+$\bullet$ Rohart F, Gautier B, Singh A, L\^e Cao K-A (2017). mixOmics: an R package for 'omics feature selection and multiple data integration. \href{http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005752}{\textit{PLoS Computational Biology} 13(11)}. \\
+
+\noindent The manual R version (type in R: \R{citation("mixOmics")}), for example (\citealt{mixOmicsR}): \\
+$\bullet$ L\^e Cao K-A, Rohart F, Gonz\'alez I,  and D\'ejean S with key contributors Gautier B, Bartolo F and contributions from Monget P,  Coquery J, Yao F and Liquet B (2017). mixOmics: Omics Data Integration Project. \textit{R package version 6.4.2}. %, \url{{https://CRAN.R-project.org/package=mixOmics}}.
+
+
+\section{Flexibility of \texttt{mixOmics}}
+The package \R{mixOmics} offers a wide range of multivariate methodologies (Figure \ref{fig:frameworkV6}) to address different types of biological questions or guide further analytical investigations which we list below. Several topics will not be presented during this one-day workshop but are listed in Section \ref{notCovered}.
+
+
+
+\subsection*{Exploring one single data set (e.g. transcriptomics data set)}
+
+\begin{itemize}
+  \item {\color{blue}Principal Component Analysis (PCA)} enables to identify trends or patterns in the data and to understand if the major sources of variation come from experimental bias, batch effects or observed biological differences. The sample plots enable to visualise if the biological samples `naturally' cluster according to the biological conditions. More details about the PCA approach can be found in \citet{Jol05}, see Chapter \ref{method:PCA}. 
+  
+  \item {\color{blue}sparse Principal Component Analysis (sPCA)} \citep{She07} enables the selection of features (e.g. transcripts) that contribute the most to the variation highlighted by PCA in the data set, see Chapter \ref{method:PCA}. 
+\end{itemize}
+
+
+
+\subsection*{Classifying different groups of samples according to a discrete outcome}
+In that specific setting, $X$ = expression data and $Y$ is a vector indicating the class of each sample.
+
+\begin{itemize}
+  \item {\color{blue}PLS-Discriminant Analysis (PLS-DA)} is a linear model that performs a classification task and predicts the class of new samples \citep{Bar03}, see Chapter \ref{method:PLSDA}. 
+  \item The sparse variant {\color{blue}sparse PLS-DA (sPLS-DA)} \citet{Lec11} selects the most predictive / discriminative features in the data that help classifying the samples, see Chapter \ref{method:PLSDA}. 
+\end{itemize}
+
+
+\subsection*{$N-$ integration: integrating more than two data sets measured on the same samples (see Chapter \ref{study:multiblock})}
+The \textit{multiblock analysis} module implements an improved version of Generalised Canonical Correlation Analysis (GCCA \citealt{Ten14}) for the integration of more than two data sets (Fig. \ref{fig:frameworkV6}). Three variants are currently proposed: regularized GCCA (a generalization of rCCA) to maximise correlation between all data sets, sparse GCCA (a generalization of sPLS) to select correlated variables from each data set, and sparse GCC Discriminant Analysis (sGCC-DA, a generalization of sPLS-DA) to select correlated and discriminative variables in a supervised context (see case study Chapter \ref{study:multiblock} for our new \R{DIABLO} framework, \citealt{Sin16}). We are currently adding more functionalities to this module, contact us for more details, see also \url{http://mixomics.org/mixdiablo/}.
+
+
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[angle=0,width=0.8\textwidth]{Figures/Intro/framework-oneday}
+\end{center}
+\caption{\R{mixOmics} methods presented during this one-day workshop with different variants for variable selection \label{fig:framework-oneday}}
+\end{figure}
+
+
+\section{Ongoing methodological developments}
+\subsection*{Longitudinal or time-course multi-omics data modelling and analysis (not covered during this workshop)}
+We are currently working on linear mixed spline models to be integrated into \R{mixOmics}. Contact us for more details (manuscript and package \texttt{lmms} are available for the first level of analysis, \citealt{Str15}).
+
+
+\section{Summary of the different case studies used in this workshop}
+Several data sets are available in the \texttt{mixOmics} library and will be used as case studies throughout the workshop. We summarise their main characteristics in Table \ref{tab:cs}.
+
+
+\begin{center} 
+\begin{table}[H]
+\caption{Summary of the different case studies analysed during the workshop. }\label{tab:cs}
+\scalebox{0.7}{
+\begin{tabular}{l l l l l l} \hline 
+Name & Type of data & \# of samples & Treatment/Group & Methods & More details \\ \hline 
+
+\multirow{3}{*}{multidrug} & ABC transporters (48)    & 60 cell lines & cell lines (9)  & PCA, sPCA    & \R{?multidrug} \\ 
+                            & gene expr. (1,429) &               &                 & NIPALS    &  Analysed in Chap \ref{study:MultidrugPCA}\\ \hline 
+%                            &                         &               &                 & IPCA, sIPCA   &  \\ \hline  
+                            
+% \multirow{2}{*}{nutrimouse} & lipids (21) & 40 mice & diet (5)        & rCCA    & \R{?nutrimouse} \\ 
+%                             & gene expr. (120) &  & genotype (2) &     &  Analysed in Chap \ref{study:nutrimouse}\\   \hline                             
+%         
+%                             
+% \multirow{3}{*}{liver.toxicity} & gene expr.  (3,116)    & 64 rats       & dose (4)          & sPLS    & \R{?liver.toxicity} \\ 
+%                                 & clinical measures (10)     &               & time necropsy (4) & multilevel sPLS    &  Analysed in Chap \ref{study:liver}\\  
+%                                 &                            &               &                  &   &  \\ \hline                             
+                            
+  
+\multirow{3}{*}{srbct} & gene expr.  (2,308)    & 63 human tumour       & tumour type (4)          & PCA    & \R{?srbct} \\ 
+                                &    & samples               &  &  PLS-DA, sPLS-DA  &  Analysed in Chap \ref{study:SRBCT}\\  
+                                &                            &               &                  &   &  \\ \hline   
+                                
+% \multirow{3}{*}{vac18} & gene expr.  (1,000)    & 42 PBMC human        & stimulation (4)          & multilevel PCA     & \R{?vac18} \\ 
+%                                                     &    &samples              & &  multilevel sPLS-DA   &  Analysed in Chap \ref{study:vac18}\\  
+%                                 &                            &               &                  &   &  \\ \hline        
+
+% \multirow{3}{*}{vac18.simulated} & gene expr.  (500)    & 48 simulated samples & stimulation (4) & multilevel sPLS-DA    & \R{?vac18.simulated} \\ 
+%                                 &    &               & time (2)    &    &  Analysed in Chap \ref{study:vac18} \\  
+%                                 &                            &               &                  &   &  \\ \hline        
+ \multirow{2}{*}{diverse.16S}  & OTU (1674) & 162 samples & bodysites (3)        & multilevel PCA  & \R{?diverse.16S} \\ 
+                           &  &  &  & multilevel sPLS-DA  &  Analysed in Chap \ref{study:mixMC} \\  \hline
+\multirow{3}{*}{breast.TCGA Training } & mRNA (200) & 150 tumour samples & tumour subtype (3)        & \R{block.splsda}    & \R{?breast.TCGA} \\ 
+                           & miRNA (184) &  & genotype (2) & (sGCC-DA)     &  Analysed in Chap \ref{study:multiblock}\\  
+                            & protein (142)                      &  &          &    &  \\ \hline 
+                            
+\multirow{2}{*}{breast.TCGA Validation}  & mRNA (200) & 70 tumour samples & tumour subtype (3)        & \R{predict.splsda}    & \R{?breast.TCGA} \\ 
+                          & miRNA (184) &  & genotype (2) & (sGCC-DA)    &  Analysed in Chap \ref{study:multiblock} \\  \hline
+
+% \multirow{2}{*}{diverse.16S}  & OTU (1674) & 162 samples & bodysites (3)        & multilevel PCA  & \R{?diverse.16S} \\ 
+%                           &  &  &  & multilevel sPLS-DA  &  Analysed in Chap \ref{study:mixMC} \\  \hline
+                    
+                  
+\end{tabular} 
+}
+\end{table}
+\end{center}
+
+
+\section{Input data in \texttt{mixOmics}}
+
+\subsection*{Data format}
+The input data should be numerical data frames or matrices of size $n \times p$, where $n$ is the number of samples or observational units (individuals) and $p$ is the number of biological features or variables. Each matrix should represent one type of `omics or biological feature (not necessarily 'omics!). In the case of integrative analysis, each data set should be \textit{sample matched}, \textit{i.e.} row 1 in data set $X$ and in data set $Z$ should correspond to the same individual. \\
+The data will be input differently depending on the type of method that is used. Analytical methods for one data set (PCA, PLS-DA) take the input matrix as the argument \argu{X = \!\!}, while methods to integrate  data sets (two data sets: PLS, RCCA, more than two data sets: RGCCA, SGCCA and SGCC-DA) take the input matrices as distinct separate arguments (\argu{X = \!\!} and \argu{Y = \!\!}) either as matrices for the integration of two data sets, or a list of matrices for more than two data sets. %. Integrative methods for more than two data sets (RGCCA, SGCCA and SGCC-DA) take as input data a \underline{list of data sets} in the argument \argu{X = \!\!}).
+
+
+\subsection*{Normalisation is not part of the package}
+In \R{mixOmics} we assume the input data to be \textit{normalised} using appropriate techniques specific for the type of `omics technology platform. Our methods can handle molecular features measured on a continuous scale (e.g. microarray, mass spectrometry-based proteomics and metabolomics) or sequenced-based count data (RNA-seq, 16S, shotgun metagenomics) that become `continuous' data after pre-processing and normalisation. 
+
+For microbiome 16S data, we assume that the OTU count data are pseudo counts (i.e. similar to RNA-sequencing data, we set data = data + 1) before they are normalised using Total Sum Scaling normalisation, see details here: \url{http://mixomics.org/mixmc}.
+
+\subsection*{Filtering variables}
+While \texttt{mixOmics} methods can handle large data sets (several tens of thousands of predictors), we recommend pre-filtering the data to less than 10K predictors per data set, for example by using Median Absolute Deviation \citep{Ten16} for RNA-seq data, by removing consistently low counts in microbiome data sets \citep{Aru11, Lec16} or by removing near zero variance predictors. Such step aims to lessen the computational time during the parameter tuning process.
+
+\subsection*{Centering and scaling the data}
+By default the PCA method will center and scale each variable unless set to \argu{FALSE} in the arguments \argu{center} and \argu{scale\!\!}. \\
+All PLS related methods which maximises the covariance (PLS, PLS-DA, RGCCA and SGCCA) center and scale \textit{by} each variable so that each variable has a mean 0 and a variance 1 (argument \argu{scale}). \\
+The RCC method maximises the correlation of the data, and therefore does not center nor scale the data. 
+
+\section*{Summary of classical \texttt{mixOmics} functions}
+
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[angle=0,width=1\textwidth]{Figures/Intro/cheatsheet-classic}
+\end{center}
+\caption{Feeling lost? Cheatsheet of the main mixOmics methods, parameters and associated functions.  \label{fig:cheatsheet}}
+\end{figure}
+
+
+
+
+\section{Other analyses not presented during this workshop}\label{notCovered}
+%\paragraph{Estimating missing values in the data}
+%Most of the multivariate methods in mixOmics can be performed with missing values. However, there are some cases where estimating missing values prior would be beneficial, as long as the proportion of missing values is $< 20\%$. The non-linear iterative partial least squares algorithm (\textcolor{blue}{NIPALS}, \citealt{Wol66}) forms the basis on PLS regression and performs iterative principal component analysis. The local regressions performed in the algorithm enable to estimate missing values, see Chapter \ref{method:PCA} and \citealt{Ten98} Chap. 6 for our French readers.
+
+\paragraph{Analysing repeated measurement or a cross-over design}
+When different treatments are applied on the same subjects or samples, a multilevel approach is required to highlight subtle differences within individuals but between treatments against the large individual variation between individuals \citep{Liq12}. A \R{multilevel} argument is available in the mixOmics methods PCA, PLS-DA and PLS for this specific experimental design. Usually this type of design includes a very small number of time points or repeats (2 to 3).
+
+\paragraph{Multivariate analysis of microbial communities}
+The \R{mixMC} framework has been specifically developed for microbiome data analysis, and in particular 16S experiments. Challenges in microbiome data include sparse counts and uneven sequencing depth that require to convert counts into relative proportions, leading to \textit{compositional data}. This poses a problem in most statistical analyses performed on compositional data are not suitable for relative proportions, resulting in spurious results. We  use log ratio transformations, as proposed by \citet{Ait82} which is implemented in PCA and PLS methods \citep{Lec16}. We provide a short example in this workshop, see also \url{http://mixomics.org/mixmc/} for more examples.
+
+\paragraph{Integrating two data sets measured on the same individuals/samples (e.g. transcriptomics and proteomics data)}
+\begin{itemize}
+  \item To extract or highlight common information from two matching data sets:
+    \begin{itemize}
+      \item {\color{blue}Canonical Correlation Analysis (CCA)} \citep{Gon08} or {\color{blue}Partial Least Squares (PLS) canonical mode} when the total number of features is less than the number of samples. 
+      \item {\color{blue}regularized Canonical Correlation Analysis (rCCA)} \citep{Gon09} or {\color{blue}Partial Least Squares (PLS) canonical mode} when the total number of features is greater than the number of samples.
+    \end{itemize}
+\item To model a linear relationship between multiple \textit{continuous} responses in the $Y$ data set with multiple predictors (in the $X$ data set) we use  {\color{blue}Partial Least Squares (PLS)}, classic or regression mode. Example: to model or predict the expression of metabolites  in $Y$ given the expression of transcripts in $X$.
+    \item To select features (genes, proteins) from both data sets that \textit{covary} (i.e. `change together', or are `co-expressed') across all samples, in an \textit{unsupervised} framework, we use {\color{blue}sparse Partial Least Squares (sPLS)} with a suitable mode \citep{Lec08, Lec09a}.
+\end{itemize}
+
+\paragraph{$P-$ integration: integrating studies measured on the same variables}
+The Multivariate INTegrative method \R{MINT} extends multi-group analysis from \citep{Esl14} to combine different studies generated from different labs and technological platforms (Fig. \ref{fig:frameworkV6}). This is a great challenge as for data generated under similar biological conditions, the difference between these series of measurements is so large that it acts as a confounding factor in the combined analysis. This may lead to spurious relationships between the biological outcome of interest and the effect of the different technological platforms. This systematic error is often generally referred to as `batch effect' \citep{Roh16}. We are currently adding more functionalities to this module, contact us for more details, see also \url{http://mixomics.org/mixmint/}.
+
+
+
+
+
+

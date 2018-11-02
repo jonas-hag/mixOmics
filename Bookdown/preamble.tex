@@ -1,0 +1,22 @@
+\usepackage{booktabs}
+\usepackage{amsthm}
+\makeatletter
+\def\thm@space@setup{%
+  \thm@preskip=8pt plus 2pt minus 4pt
+  \thm@postskip=\thm@preskip
+}
+\makeatother
+
+\usepackage{fancyhdr}
+\usepackage{xcolor, hyperref}
+\usepackage{lipsum}
+\setlength{\headheight}{28pt}
+\setlength{\footskip}{25pt}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\lhead{\includegraphics[width=10cm,height=1.5cm]{logo-mixomics}}
+\rhead{\thepage}
+\hypersetup{colorlinks   = true, linkcolor=blue, urlcolor  = blue}
+\fancypagestyle{plain}{\pagestyle{fancy}}
+\cfoot{\scriptsize Melbourne Integrative Genomics, School of Mathematics and Statistics | The University of Melbourne, Australia \\ Institut de Math\'{e}matiques de Toulouse, UMR 5219 | CNRS and Universit\'{e} de Toulouse, France \\ \url{http://mixomics.org}}

@@ -1,0 +1,203 @@
+# Projection to Latent Structure - Discriminant Analysis (PLS-DA) {#plsda}
+
+```{r echo=FALSE, message=FALSE}
+library(mixOmics)
+```
+
+## Biological question
+
+> *I have one single data set (e.g. microarray data) and I am interested in classifying my samples into known classes and I would like to know how informative my data are to rightly classify my samples, as well as predicting the class of new samples...*
+>
+> *In addition to the above, I would like to select the variables that help classifying the samples.*
+
+## The srbct data set
+
+The `srbct`data set is a list containing the following components:
+
+- `gene` data frame with 63 rows and 2308 columns. The expression measure of 2308 genes for the 63 subjects.
+
+- `class` class vector containing the class tumour of each case (4 classes in total).
+
+- `gene.name` data frame with 2308 rows and 2 columns containing further information on the genes.
+
+More details are available with `?srbct`.
+
+To illustrate PLS-DA, we address the discrimination of the 4 classes of samples according to the expression of the genes.
+
+## Principle of the method
+
+Although Partial Least Squares was not originally designed for classification and discrimination problems, it has often been used for that purpose (Nguyen and Rocke, 2002; Tan et al., 2004). The response matrix Y is qualitative and is internally recoded as a dummy block matrix that records the membership of each observation, i.e. each of the response categories are coded via an indicator variable. The PLS regression (now PLS-DA) is then run as if Y was a continuous matrix. This PLS classification trick works well in practice, as demonstrated in many references [@Bar03,@Ngu02a,@Bou07,@Chung10].
+
+We use the following data input matrices: X is a n $\times$ p data matrix, Y is a factor vector of length n that indicates the class of each sample, and $Y^*$ is the associated dummy matrix n $\times$ K data matrix with n the number of samples (individuals), p the number of variables and K the number of classes. A PLS-DA method outputs the following:
+
+- A **set of components**, also called latent variates. There are as many components as the chosen
+dimension of the PLS-DA model.
+
+- A **set of loading vectors**, which are coefficients corresponding to each variable. Those coefficients indicate the importance of each variable in PLS-DA, they are used to calculate the components. Each component has its associated loading vector. Loading vectors are obtained so as to maximise the covariance  between a linear combination of the variables from X (the X-component) and the factor of interest Y (the $Y^*$-component).
+
+Sparse PLS-DA performs variable selection and classification in a one step procedure. sPLS-DA is a special
+case of sparse PLS, where the l1 penalization applies only on the loading vector $a^h$ associated to the X data set.
+
+## Quick start
+
+Quick start focuses on the sparse version of PLS-DA as it is related to the question the most frequently addressed by `mixOmics` users to identify potential biomarkers.
+
+We arbitrarily set the number of variables to select at 5 on each dimension. See section \@ref(plsda-tgf) for tuning these values.
+
+```{r}
+data(srbct)
+X <- srbct$gene  
+Y <- srbct$class 
+
+MyResult.splsda <- splsda(X,Y, keepX=c(5,5,5)) # 1 Run the method
+plotIndiv(MyResult.splsda)                     # 2 Represent the individuals
+plotVar(MyResult.splsda)                       # 3 Represent the variables
+selectVar(MyResult.splsda, comp=1)$name        # Extract the selected variables on component 1
+```
+
+As PLS-DA is a supervised method, the representation of individuals automatically displays the group of each sample (contrarily to PCA for which the default behaviour does not). Here, it appears a clear-cut configuration with, horizontally, along the first dimension: BL samples on the right and others on the left; and vertically, along the second dimension, EWS at the bottom versus at the top. This discrimination is obtained considering only 5 variables per component.
+
+Running the `splsda` function with no arguments consists in using the default values that are, for the most important:
+
+- `ncomp=2`: the first two PLS components are calculated and can be used for graphical outputs;
+- `scale = TRUE`: data are scaled (variance= 1);
+- `mode = "regression"`: ** ??? **
+
+
+PLS-DA without selection can be performed in the following way:
+
+```{r fig.show='hide'}
+MyResult.plsda <- plsda(X,Y) # 1 Run the method
+plotIndiv(MyResult.plsda)    # 2 Represent the individuals
+plotVar(MyResult.plsda)      # 3 Represent the variables
+```
+
+
+
+## To go further {#plsda-tgf}
+
+### Customize plots
+
+The representation of the samples can be improved in various ways. First, if the names of the samples are not meaningful at this stage, they can be replaced by symbols (`ind.names=TRUE`). Then, ellipses can be plotted around each group (`ellipse=TRUE`, confidence level set to 95% by default, see argument `ellipse.level` to modify) as well as edges linking the centroid of each group to every samples (`star=TRUE`).
+
+```{r}
+plotIndiv(MyResult.plsda, ind.names = FALSE, legend=TRUE,
+          ellipse = TRUE, star = TRUE)
+```
+
+As too many variable names are displayed, they cannot be read, so they can be removed (`var.names=FALSE`) even if the plot obtained is not more meaningful...
+```{r fig.show='hide'}
+plotVar(MyResult.plsda, var.names=FALSE)
+```
+
+Otherwise, a cutoff can be set to display only the most meaningful variables located relatively far from the centre of the plot. It can be associated to a modification of the radius of the small circle.
+
+```{r fig.show='hide'}
+plotVar(MyResult.plsda, cutoff=0.8)
+```
+
+Note that in this case, no variable selection is performed during the calculation, it's only a way to display some variables and mask the others but every variables contribute to the calculation.
+
+### Other meaningful plots
+
+A background can be added to the individual plots. It corresponds to...
+
+```{r}
+background <- background.predict(MyResult.plsda, comp.predicted=2,
+                                dist = "max.dist") 
+plotIndiv(MyResult.plsda, comp = 1:2, group = srbct$class,
+          ind.names = FALSE, title = "Maximum distance",
+          legend = TRUE,  background = background)
+```
+
+As PLS-DA acts as a classifier, plotting a ROC Curve can be relevant to assess the results.
+
+```{r}
+auc.plsda <- auroc(MyResult.plsda)
+```
+
+### Variable selection
+
+To complete the example already provided in the quick start, we mention some specific features of variable selection.
+
+First, the number of variables to select on each component can be different. It could be relevant to select more variables on the first dimension than on the following.
+
+```{r}
+MyResult.splsda2 <- splsda(X,Y, ncomp=3, keepX=c(15,10,5))
+```
+
+Then graphical outputs and extraction of the selected variables can be run in the usual way.
+
+```{r eval=FALSE}
+plotVar(MyResult.splsda2)
+selectVar(MyResult.splsda2, comp=1)$name
+selectVar(MyResult.splsda2, comp=2)$name
+selectVar(MyResult.splsda2, comp=3)$name
+```
+
+
+
+With 4 classes to be discriminated, individual plots in 3d can be helpful.
+```{r eval=FALSE}
+plotIndiv(MyResult.splsda2, style="3d")
+```
+
+
+
+
+### Tuning parameters
+
+Regarding the number of components:
+
+```{r eval=FALSE}
+MyResult.plsda2 <- plsda(X,Y, ncomp=10)
+MyPerf.plsda <- perf(MyResult.plsda2, validation = "Mfold", folds = 3, 
+                  progressBar = FALSE, auc = TRUE, nrepeat = 2) 
+
+plot(MyPerf.plsda, col = color.mixo(5:7), sd = TRUE, legend.position = "horizontal")
+```
+
+Regarding the number of variables to select:
+
+```{r eval=FALSE}
+list.keepX <- c(1:10,  seq(20, 300, 10))
+
+tune.splsda.srbct <- tune.splsda(X, Y, ncomp = 6, validation = 'Mfold',
+                                 folds = 5, dist = 'max.dist', progressBar = FALSE,
+                                 measure = "BER", test.keepX = list.keepX,
+                                 nrepeat = 10)
+error <- tune.splsda.srbct$error.rate
+ncomp <- tune.splsda.srbct$choice.ncomp$ncomp # optimal number of components based on t-tests
+ncomp
+select.keepX <- tune.splsda.srbct$choice.keepX[1:ncomp]  # optimal number of variables to select
+select.keepX
+plot(tune.splsda.srbct, col = color.jet(6))
+
+MyResult.splsda.tune <- splsda(X, Y, ncomp = ncomp, keepX = select.keepX)
+plotIndiv(MyResult.splsda.tune, ind.names = FALSE, legend=TRUE,
+          ellipse = TRUE, title="SPLS-DA, Final result")
+plotLoadings(MyResult.splsda.tune, comp=1)
+plotLoadings(MyResult.splsda.tune, comp=2)
+```
+
+### Other sources
+
+
+Other examples are provided at the end of the manual of the `plsda` function. Run `example(plsda)` to have a look  on them.
+
+Complements are also available on the mixOmics website <http://www.mixomics.org>, items **Methods** and **Case studies**.
+
+## FAQ
+
+* Can I discriminate more than two groups of samples (multiclass classification)?
+
+    Yes, this is one of the advantage of PLS-DA, see the SRBCT example
+
+* Can I have a hierarchy between two factors (e.g. diet nested into genotype)?
+
+    Unfortunately no, all you can do is discriminate all groups at once (i.e. 4 x 2 groups when there are 4 diets and 2 genotypes)
+
+* Can I have missing values in my data?
+    + Yes in the X data set, but you won't be able to do any prediction (`tune, perf, predict`)
+    + No in the Y factor
+

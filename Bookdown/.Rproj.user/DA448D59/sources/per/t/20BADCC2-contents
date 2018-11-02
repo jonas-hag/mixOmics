@@ -1,0 +1,870 @@
+\documentclass[11pt,a4paper]{report}
+\usepackage{sty-files/KAstyle}
+
+\usepackage{fancyhdr}
+\usepackage[noae,nogin]{Sweave}
+\usepackage{natbib}           % bibliography
+\usepackage{amsfonts,amsmath, amsthm} 
+\usepackage{amsthm}           % to define new theorems
+\usepackage{mdframed}         % for framed
+\usepackage{float} % to put figures exactly Here
+\usepackage[multidot]{grffile}  % to deal with figure names with 2 dots
+\usepackage{multirow}
+\usepackage{wrapfig}  % wrapping figures
+
+% ----define new commands
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+
+% a blankpage
+\newcommand{\blankpage}{
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\newpage
+}
+
+
+% ---- define new theorems
+%\newtheorem{algo}{Pseudo algorithm}
+
+  
+% this is to define a new algo
+  \newtheorem{mdtheorem3}{Pseudo algorithm}
+  \newenvironment{algo}
+{\begin{center}
+    \begin{tabular}{|p{0.9\textwidth}|}
+    \hline\\
+    }
+    { 
+    \\ \hline
+    \end{tabular} 
+    \end{center}
+    }
+
+
+
+% ---Redefine Sweave Style -----------------
+
+\setkeys{Gin}{width=0.8\textwidth} 
+
+ %,height=4}
+
+% Shorten the output lines that R produces
+
+
+%1. Schunk
+\renewenvironment{Schunk}
+  {\vspace{2pt}\small}
+  {\vspace{7pt}}
+
+%2. Sinput
+\DefineVerbatimEnvironment{Sinput}{Verbatim} {
+  xleftmargin=10pt,
+  fontshape=n, 
+  frame=leftline, 
+  framerule=2.5pt, 
+  gobble=0, 
+  framesep=8pt, 
+  rulecolor=\color{bl2},
+  formatcom=\color{bl1},
+  fontsize=\footnotesize
+ }
+
+%3. Soutput
+\DefineVerbatimEnvironment{Soutput}{Verbatim} {
+  xleftmargin=10pt,
+  fontshape=sl, 
+  frame=leftline, 
+  framerule=2.5pt, 
+  gobble=0, 
+  framesep=8pt,
+  rulecolor=\color{gray},
+  formatcom=\color{darkgray},
+  fontsize=\footnotesize
+}
+
+% ------- colored background on title page ----
+\usepackage{eso-pic}
+\newcommand\BackgroundPic{%
+\put(0,0){%
+\parbox[b][\paperheight]{\paperwidth}{%
+\vfill
+%\vspace*{-4cm}
+\centering
+\includegraphics[width=1\paperwidth,height=1\paperheight, keepaspectratio]{Figures/Title/coverOneDaygris-IBC2018} \\      %  !!! cover title page
+%\includegraphics[height=0.08\paperwidth, keepaspectratio]{Figures/Title/UOM}  \hspace{1cm} \includegraphics[height=0.08\paperwidth, keepaspectratio]{Figures/Title/cmri}   
+\vfill
+}}}
+
+
+% ============================ start document ===========================
+\begin{document}
+\input{Figures/fig-concordance}
+% no page numbering:
+\pagenumbering{gobble}% Remove page numbers (and reset to 1)
+
+
+% ---------------------------------------
+% ---------- Title -----------
+% ---------------------------------------
+
+\AddToShipoutPicture*{\BackgroundPic}
+\newpage\thispagestyle{empty}
+~
+\blankpage \thispagestyle{empty}
+
+
+% -----------------------------------------------
+%       Chapter: Foreword and acknowledgements
+% ----------------------------------------------
+\chapter*{Foreword}
+% !Rnw root = mixOmics-material-oneday.Rnw
+
+
+
+\subsection*{Objective}
+During this workshop we will introduce fundamental concepts of multivariate dimention reduction, including the exploration and analysis of a single data set and the integrative analysis of multiple data sets. We will present statistical concepts such as covariance and correlation, multiple linear regression, classification and prediction, cross-validation, selection of diagnostic or prognostic markers, l$_1$ and l$_2$ penalties in a regression framework. \\
+Each methodology that will be presented will be applied on biological `omics studies that include transcriptomics, metabolomics, proteomics, metagenomics data sets using our \R{mixOmics} R package, alternating theory and application on the case studies.
+
+
+\subsection*{Requirements}
+We expect the trainees to have a good working knowledge in R (e.g. handling data frames and perform simple calculations). Attendees are requested to bring their \textbf{own laptop}. % and their \textbf{own data they wish to analyse} during the last third day of the training. \\
+
+
+To run the \R{R} scripts in this workshop, you \textit{may} need to install or update the \textit{latest} version of \textbf{R} available from the CRAN (currently > 3.4, \url{https://cran.r-project.org/}), followed by the update or installation of the \R{R} package \R{mixOmics} version 6.4.1 with one of the two following options: %See more details at \url{http://mixomics.org/2018/06/software-requirements-for-2018-mixomics-workshop/}. 
+
+Installation from bioconductor:
+\begin{Schunk}
+\begin{Sinput}
+> if (!requireNamespace("BiocManager", quietly = TRUE))
++     install.packages("BiocManager")
+>  BiocManager::install("mixOmics")
+\end{Sinput}
+\end{Schunk}
+
+Alternatively, you can install the development version of the package from Github.
+\begin{Schunk}
+\begin{Sinput}
+> BiocManager::install("mixOmicsTeam/mixOmics/")
+\end{Sinput}
+\end{Schunk}
+ 
+\textbf{For apple mac users}, if you are unable to install the \texttt{mixOmics} imported library \R{rgl} (\textit{rgl.so} error), you will \textbf{first} need to install the XQuartz software \url{https://www.xquartz.org/}. In addition we strongly advise using the \textbf{RStudio software} \url{http://www.rstudio.com/}. 
+
+
+\subsection*{Versions of this workshop material}
+This is the 10th version of this course material. The previous versions were:
+\begin{enumerate}
+\itemsep0em 
+  \item One-day tutorial at the European Conference on Computational Biology 2014 (ECCB'14), Strasbourg, France, Sept 7 2014, 
+  \item Two-day workshop hosted by the National Institute for Agricultural Research and organised by the Bioinformatics Facility Genotoul, Toulouse, October 6-7 2014, 
+  \item Two-day workshop hosted and organised by the Statistical Consulting Centre, Department of Statistics, University of Auckland, New Zeland, 9-10 April 2015,
+  \item Two-day workshop, Translational Research Institute, Brisbane Australia, Aug 13-14 2015,
+  \item `French mixOmics workshop tour' taught at CIRAD Montpellier, Plateforme Biostatistique Genotoul, Institut Math\'ematiques de Toulouse and Plateforme Migale and INRA Jouy-en-Josas, Sept-Oct 2015, 
+  \item Three-day workshops with a `\textit{bring your own data}' option in 2016 and 2017
+  \item Two-day workshop in conjunction with the first Advanced mixOmics workshop, sponsored by Institut National Polytechnique Toulouse, and COST (European Cooperation in science and technology), INRA Toulouse, Oct and Nov 2017. 
+  \item One-day workshop at Westmead Children's Medical Research Institute, Sydney, Australia, April 13 2018. 
+  \item One-day workshop at the International Biometrics Conference, July 2018, and three-day workshop at the Univeristy of Melbourne, July 2018. 
+\end{enumerate}
+\noindent
+
+
+\subsection*{Permission for reuse}
+The course was written by Dr Kim-Anh L\^e Cao, with suggestions and constructive feedback from the mixOmics team and our attendees. Formal permission must be sought to redistribute, or reuse part of any material provided during this workshop. Acknowledgements will also be required if any of this work is quoted or cited. 
+
+
+
+\subsection*{Acknowledgements}
+The \R{mixOmics} core team (Drs Kim-Anh L\^e Cao, Florian Rohart, Ignacio Gonz\'alez and S\'ebastien D\'ejean) would like to thank theirformer students,  workshop participants and the key \R{mixOmics} developers \textbf{Dr Xin Yi Chua} (Queensland Facility for Advanced Bioinformatics, University of Queensland), \textbf{Mr Beno\^it Gautier} (The University of Queensland Diamantina Institute, Translational Research Institute), \textbf{Mr Francois Bartolo} (Institut de Math\'ematiques de Toulouse, Universit\'e Paul Sabatier) . They are also indebted to numerous \R{mixOmics} users who continuously help improving the package. \\
+\noindent
+We wish to acknowledge the funding bodies who made the mixOmics project possible: the National Health and Medical Research Council Career Development Fellowship (NHMRC, GNT1087\-415, KALC), the NHMRC Program grant (NHMRC, GNT1058993, BG) and Australian Research Council (ARC, DP130100777, FR), the Australian Cancer Research Foundation (ACRF) for the Diamantina Individualised Oncology Care Centre at The University of Queensland Diamantina (KALC, FR) and the Agence National de Recherche (ANR, SYNTHACS, FB).
+
+%\newpage\thispagestyle{empty}
+
+\section*{Your teacher}
+\subsection*{Dr Kim-Anh L\^e Cao (core member of \texttt{mixOmics})}
+
+\begin{wrapfigure}{L}{0.15\textwidth}
+\centering
+\includegraphics[width=0.15\textwidth]{Figures/CV/180283_39_crop_small}
+\end{wrapfigure}
+
+Dr Kim-Anh L\^{e} Cao (University of Melbourne, Australia) was awarded her PhD in 2008 at Universit
+
+During her spare time, Kim-Anh is a keen rock climber and bushwalker. Her favourite or common travel destinations are France and South Africa.
+
+% \subsection*{Yiwen Wang (Eva) (tutor)}
+% 
+% Nicholas Matigian is a data analyst for the The University of Queensland Diamantina Institute Biostatistics facility at the Translational Research Institute.  He obtained a Bachelor of Applied Science (Biotechnology and Molecular Biology) with Honors from the Queensland University of Technology. His research has focused on development alternate non-brain, easily accessible cellular models for various neurological disorders.  He has experience in both `wet lab' generating, and `dry lab' analysing high-throughput data.  
+
+
+% \subsection*{S\'ebastien D\'ejean (core member of \texttt{mixOmics})}
+% \begin{wrapfigure}{L}{0.15\textwidth}
+% \centering
+% \includegraphics[width=0.15\textwidth]{Figures/CV/SebastienDejean}
+% \end{wrapfigure}
+% 
+% Dr S\'ebastien DÃ©jean was awarded his PhD in Applied Statistics in 2002 at Universit\'{e} de Toulouse, France after spending 4 years in a Biometry lab at INRA (French National Institute for Agronomic Research). Since then he has been working at the Toulouse Mathematics Institute (Universit\'{e} de Toulouse, France) as a research engineer. S\'ebastien likes to interact closely with scientists working in different research areas ranging from high-throughput biology, chemistry to information retrieval. He is an expert in statistical data analysis and he contributes to the development of several \texttt{R} packages including \texttt{mixOmics}.\\
+% 
+% S\'ebastien is deeply committed into teaching, including training statistical/software workshops for researchers and scientific and administrative staff. He can illustrate Principal Component Analysis with a fishing rod, a pizza-box and a soccer ball; do you know why?\\
+% 
+% Outside work, S\'ebastien runs! From 10km (best performance 36'31 as of June 2018) to marathons (3h26', to be improved). He runs with the green and yellow team jersey of the Athletics Coaching Club Ramonville. S\'ebastien was qualified for the the 10km French championship in his year category in Aubagne in 2017. He'll start running marathons again in October this year!
+% 
+% 
+
+
+
+% ---------------------------------------
+% ---------- Table of content -----------
+% ---------------------------------------
+\tableofcontents
+
+\newpage\thispagestyle{empty}
+~
+\newpage\thispagestyle{empty}
+
+\setcounter{page}{1}
+
+% -------------------
+%\setcounter{page}{1}
+\clearpage
+\pagenumbering{arabic}% Arabic page numbers (and reset to 1)
+% -------------------
+
+
+% % -----------------------------------------------
+% %       Chapter: introduction
+% % ----------------------------------------------
+%\part{Introduction}\label{Intro}
+\chapter{Introduction}\label{Intro}
+% !Rnw root = mixOmics-material-oneday.Rnw
+
+
+\section{What is \texttt{mixOmics}?}
+\R{mixOmics} is a freely available R package currently implementing nineteen methodologies for the exploration and the integration of biological data sets. Note that that mixOmics is not limited to biological data only and can be applied to other type of data where integration is required. A strong focus is given to graphical representation to better understand the relationships between omics data and visualize the correlation structure at the sample and variable levels. \\
+
+Besides the \R{R} package, the \R{mixOmics} project includes:
+\begin{itemize} \itemsep0em 
+  \item a website with extensive tutorials: \url{http://www.mixOmics.org}
+  %\item a Beta version of a web-interface: \url{http://mixomics.qfab.org/}
+  %\item a beta version of a shiny web-interface (currently: single data set analysis): \\
+  % \url{http://mixomics-projects.di.uq.edu.au/Shiny/}
+\end{itemize}
+
+\noindent
+\textbf{Want to be part of the mixOmics community?}
+Subscribe to our newsletter mailing list by simply sending an e-mail with no subject of body to: \\
+\url{mixomics-news-subscribe@math.univ-toulouse.fr} \footnote{You can unsubscribe at any time by sending an e-mail to {\footnotesize \url{mixomics@math.univ-toulouse.fr}}}. \\
+Follow us on \includegraphics[width=0.02\paperwidth]{Figures/Title/Twitter}: \textcolor{blue}{@ mixOmics\_team}
+
+\noindent
+\textbf{Any question or feedback?} If you experience a bug, you can notify us on \urlhttps://github.com/mixOmicsTeam/mixOmics/issues}. For other questions, emails us at \url{mixomics@math.univ-toulouse.fr}.
+
+\section{Why multivariate methods?}
+Single `omics data analysis does not provide enough information to give a deep understanding of a biological system. We can obtain a more precise picture of a system by combining multiple `omics data sets. In \R{mixOmics}  we propose a whole range of multivariate methods that we developed and validated on many biological studies. \\
+Multivariate methods are well suited to large `omics data sets where the number of variables (e.g. genes, proteins, metabolites) is much larger than the number of samples (patients, cells, mice). They have the appealing properties of reducing the dimension of the data by using instrumental variables (`components'), which are defined as combination of all variables. Those components are then used to produce useful graphical outputs that enable better understanding of  the relationships and correlation structure between the different data sets that are integrated. We have further developed sparse multivariate models to identify the key variables that are highly correlated, or explain the biological outcome of interest. The identified variables are then more amenable to `classical' univariate statistical inference and the generation of novel biological hypotheses.
+
+
+\section{\texttt{mixOmics} philosophy}
+The multivariate statistical methods implemented in \R{mixOmics} aim at summarizing the main characteristics of the data while capturing the largest sources of variation in the data. There is an underlying stastistical model for each method, as detailed in the methods section, however those models radically differ from univariate formulations as they do not test one variable at a time, or produce p-values! In that sense, multivariate methods are mostly considered as `exploratory' methods as they do not enable statistical inference, however, the \textit{biological question matters} in order to apply the suitable multivariate method, as we will emphasize during the workshop. \\
+The graphical outputs resulting from projecting the data into a much smaller subspace than the original data space enable to:
+\begin{itemize}
+  \item assess if the separation of the samples is in agreement with a phenotype of interest (discrete or continuous outcome),
+  \item identify potential sample outliers,
+  \item reveal the effect of confounding variables, laboratory or platform effects.
+\end{itemize}
+In addition, a strong focus is given to statistical data integration on matching data sets (i.e. experiments performed on the same individual or samples), where the aim is to maximise the common information between those data sets.  The novel integrative multivariate methodologies that we propose were specifically developed for large data sets and the sparse approaches in particular allow for the identification of key features amongst the thousands that are measured.
+
+
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[angle=0,width=1\textwidth]{Figures/Intro/framework-global}
+\end{center}
+\caption{Global framework of \R{mixOmics} methods. \label{fig:frameworkV6}}
+\end{figure}
+
+
+
+\section{How do I cite \texttt{mixOmics}?}
+Each method has an associated methods paper (see below). We also recently published a  generic software article \citep{mixOmics}: \\
+$\bullet$ Rohart F, Gautier B, Singh A, L\^e Cao K-A (2017). mixOmics: an R package for 'omics feature selection and multiple data integration. \href{http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005752}{\textit{PLoS Computational Biology} 13(11)}. \\
+
+\noindent The manual R version (type in R: \R{citation("mixOmics")}), for example (\citealt{mixOmicsR}): \\
+$\bullet$ L\^e Cao K-A, Rohart F, Gonz\'alez I,  and D\'ejean S with key contributors Gautier B, Bartolo F and contributions from Monget P,  Coquery J, Yao F and Liquet B (2017). mixOmics: Omics Data Integration Project. \textit{R package version 6.4.2}. %, \url{{https://CRAN.R-project.org/package=mixOmics}}.
+
+
+\section{Flexibility of \texttt{mixOmics}}
+The package \R{mixOmics} offers a wide range of multivariate methodologies (Figure \ref{fig:frameworkV6}) to address different types of biological questions or guide further analytical investigations which we list below. Several topics will not be presented during this one-day workshop but are listed in Section \ref{notCovered}.
+
+
+
+\subsection*{Exploring one single data set (e.g. transcriptomics data set)}
+
+\begin{itemize}
+  \item {\color{blue}Principal Component Analysis (PCA)} enables to identify trends or patterns in the data and to understand if the major sources of variation come from experimental bias, batch effects or observed biological differences. The sample plots enable to visualise if the biological samples `naturally' cluster according to the biological conditions. More details about the PCA approach can be found in \citet{Jol05}, see Chapter \ref{method:PCA}. 
+  
+  \item {\color{blue}sparse Principal Component Analysis (sPCA)} \citep{She07} enables the selection of features (e.g. transcripts) that contribute the most to the variation highlighted by PCA in the data set, see Chapter \ref{method:PCA}. 
+\end{itemize}
+
+
+
+\subsection*{Classifying different groups of samples according to a discrete outcome}
+In that specific setting, $X$ = expression data and $Y$ is a vector indicating the class of each sample.
+
+\begin{itemize}
+  \item {\color{blue}PLS-Discriminant Analysis (PLS-DA)} is a linear model that performs a classification task and predicts the class of new samples \citep{Bar03}, see Chapter \ref{method:PLSDA}. 
+  \item The sparse variant {\color{blue}sparse PLS-DA (sPLS-DA)} \citet{Lec11} selects the most predictive / discriminative features in the data that help classifying the samples, see Chapter \ref{method:PLSDA}. 
+\end{itemize}
+
+
+\subsection*{$N-$ integration: integrating more than two data sets measured on the same samples (see Chapter \ref{study:multiblock})}
+The \textit{multiblock analysis} module implements an improved version of Generalised Canonical Correlation Analysis (GCCA \citealt{Ten14}) for the integration of more than two data sets (Fig. \ref{fig:frameworkV6}). Three variants are currently proposed: regularized GCCA (a generalization of rCCA) to maximise correlation between all data sets, sparse GCCA (a generalization of sPLS) to select correlated variables from each data set, and sparse GCC Discriminant Analysis (sGCC-DA, a generalization of sPLS-DA) to select correlated and discriminative variables in a supervised context (see case study Chapter \ref{study:multiblock} for our new \R{DIABLO} framework, \citealt{Sin16}). We are currently adding more functionalities to this module, contact us for more details, see also \url{http://mixomics.org/mixdiablo/}.
+
+
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[angle=0,width=0.8\textwidth]{Figures/Intro/framework-oneday}
+\end{center}
+\caption{\R{mixOmics} methods presented during this one-day workshop with different variants for variable selection \label{fig:framework-oneday}}
+\end{figure}
+
+
+\section{Ongoing methodological developments}
+\subsection*{Longitudinal or time-course multi-omics data modelling and analysis (not covered during this workshop)}
+We are currently working on linear mixed spline models to be integrated into \R{mixOmics}. Contact us for more details (manuscript and package \texttt{lmms} are available for the first level of analysis, \citealt{Str15}).
+
+
+\section{Summary of the different case studies used in this workshop}
+Several data sets are available in the \texttt{mixOmics} library and will be used as case studies throughout the workshop. We summarise their main characteristics in Table \ref{tab:cs}.
+
+
+\begin{center} 
+\begin{table}[H]
+\caption{Summary of the different case studies analysed during the workshop. }\label{tab:cs}
+\scalebox{0.7}{
+\begin{tabular}{l l l l l l} \hline 
+Name & Type of data & \# of samples & Treatment/Group & Methods & More details \\ \hline 
+
+\multirow{3}{*}{multidrug} & ABC transporters (48)    & 60 cell lines & cell lines (9)  & PCA, sPCA    & \R{?multidrug} \\ 
+                            & gene expr. (1,429) &               &                 & NIPALS    &  Analysed in Chap \ref{study:MultidrugPCA}\\ \hline 
+%                            &                         &               &                 & IPCA, sIPCA   &  \\ \hline  
+                            
+% \multirow{2}{*}{nutrimouse} & lipids (21) & 40 mice & diet (5)        & rCCA    & \R{?nutrimouse} \\ 
+%                             & gene expr. (120) &  & genotype (2) &     &  Analysed in Chap \ref{study:nutrimouse}\\   \hline                             
+%         
+%                             
+% \multirow{3}{*}{liver.toxicity} & gene expr.  (3,116)    & 64 rats       & dose (4)          & sPLS    & \R{?liver.toxicity} \\ 
+%                                 & clinical measures (10)     &               & time necropsy (4) & multilevel sPLS    &  Analysed in Chap \ref{study:liver}\\  
+%                                 &                            &               &                  &   &  \\ \hline                             
+                            
+  
+\multirow{3}{*}{srbct} & gene expr.  (2,308)    & 63 human tumour       & tumour type (4)          & PCA    & \R{?srbct} \\ 
+                                &    & samples               &  &  PLS-DA, sPLS-DA  &  Analysed in Chap \ref{study:SRBCT}\\  
+                                &                            &               &                  &   &  \\ \hline   
+                                
+% \multirow{3}{*}{vac18} & gene expr.  (1,000)    & 42 PBMC human        & stimulation (4)          & multilevel PCA     & \R{?vac18} \\ 
+%                                                     &    &samples              & &  multilevel sPLS-DA   &  Analysed in Chap \ref{study:vac18}\\  
+%                                 &                            &               &                  &   &  \\ \hline        
+
+% \multirow{3}{*}{vac18.simulated} & gene expr.  (500)    & 48 simulated samples & stimulation (4) & multilevel sPLS-DA    & \R{?vac18.simulated} \\ 
+%                                 &    &               & time (2)    &    &  Analysed in Chap \ref{study:vac18} \\  
+%                                 &                            &               &                  &   &  \\ \hline        
+ \multirow{2}{*}{diverse.16S}  & OTU (1674) & 162 samples & bodysites (3)        & multilevel PCA  & \R{?diverse.16S} \\ 
+                           &  &  &  & multilevel sPLS-DA  &  Analysed in Chap \ref{study:mixMC} \\  \hline
+\multirow{3}{*}{breast.TCGA Training } & mRNA (200) & 150 tumour samples & tumour subtype (3)        & \R{block.splsda}    & \R{?breast.TCGA} \\ 
+                           & miRNA (184) &  & genotype (2) & (sGCC-DA)     &  Analysed in Chap \ref{study:multiblock}\\  
+                            & protein (142)                      &  &          &    &  \\ \hline 
+                            
+\multirow{2}{*}{breast.TCGA Validation}  & mRNA (200) & 70 tumour samples & tumour subtype (3)        & \R{predict.splsda}    & \R{?breast.TCGA} \\ 
+                          & miRNA (184) &  & genotype (2) & (sGCC-DA)    &  Analysed in Chap \ref{study:multiblock} \\  \hline
+
+% \multirow{2}{*}{diverse.16S}  & OTU (1674) & 162 samples & bodysites (3)        & multilevel PCA  & \R{?diverse.16S} \\ 
+%                           &  &  &  & multilevel sPLS-DA  &  Analysed in Chap \ref{study:mixMC} \\  \hline
+                    
+                  
+\end{tabular} 
+}
+\end{table}
+\end{center}
+
+
+\section{Input data in \texttt{mixOmics}}
+
+\subsection*{Data format}
+The input data should be numerical data frames or matrices of size $n \times p$, where $n$ is the number of samples or observational units (individuals) and $p$ is the number of biological features or variables. Each matrix should represent one type of `omics or biological feature (not necessarily 'omics!). In the case of integrative analysis, each data set should be \textit{sample matched}, \textit{i.e.} row 1 in data set $X$ and in data set $Z$ should correspond to the same individual. \\
+The data will be input differently depending on the type of method that is used. Analytical methods for one data set (PCA, PLS-DA) take the input matrix as the argument \argu{X = \!\!}, while methods to integrate  data sets (two data sets: PLS, RCCA, more than two data sets: RGCCA, SGCCA and SGCC-DA) take the input matrices as distinct separate arguments (\argu{X = \!\!} and \argu{Y = \!\!}) either as matrices for the integration of two data sets, or a list of matrices for more than two data sets. %. Integrative methods for more than two data sets (RGCCA, SGCCA and SGCC-DA) take as input data a \underline{list of data sets} in the argument \argu{X = \!\!}).
+
+
+\subsection*{Normalisation is not part of the package}
+In \R{mixOmics} we assume the input data to be \textit{normalised} using appropriate techniques specific for the type of `omics technology platform. Our methods can handle molecular features measured on a continuous scale (e.g. microarray, mass spectrometry-based proteomics and metabolomics) or sequenced-based count data (RNA-seq, 16S, shotgun metagenomics) that become `continuous' data after pre-processing and normalisation. 
+
+For microbiome 16S data, we assume that the OTU count data are pseudo counts (i.e. similar to RNA-sequencing data, we set data = data + 1) before they are normalised using Total Sum Scaling normalisation, see details here: \url{http://mixomics.org/mixmc}.
+
+\subsection*{Filtering variables}
+While \texttt{mixOmics} methods can handle large data sets (several tens of thousands of predictors), we recommend pre-filtering the data to less than 10K predictors per data set, for example by using Median Absolute Deviation \citep{Ten16} for RNA-seq data, by removing consistently low counts in microbiome data sets \citep{Aru11, Lec16} or by removing near zero variance predictors. Such step aims to lessen the computational time during the parameter tuning process.
+
+\subsection*{Centering and scaling the data}
+By default the PCA method will center and scale each variable unless set to \argu{FALSE} in the arguments \argu{center} and \argu{scale\!\!}. \\
+All PLS related methods which maximises the covariance (PLS, PLS-DA, RGCCA and SGCCA) center and scale \textit{by} each variable so that each variable has a mean 0 and a variance 1 (argument \argu{scale}). \\
+The RCC method maximises the correlation of the data, and therefore does not center nor scale the data. 
+
+\section*{Summary of classical \texttt{mixOmics} functions}
+
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[angle=0,width=1\textwidth]{Figures/Intro/cheatsheet-classic}
+\end{center}
+\caption{Feeling lost? Cheatsheet of the main mixOmics methods, parameters and associated functions.  \label{fig:cheatsheet}}
+\end{figure}
+
+
+
+
+\section{Other analyses not presented during this workshop}\label{notCovered}
+%\paragraph{Estimating missing values in the data}
+%Most of the multivariate methods in mixOmics can be performed with missing values. However, there are some cases where estimating missing values prior would be beneficial, as long as the proportion of missing values is $< 20\%$. The non-linear iterative partial least squares algorithm (\textcolor{blue}{NIPALS}, \citealt{Wol66}) forms the basis on PLS regression and performs iterative principal component analysis. The local regressions performed in the algorithm enable to estimate missing values, see Chapter \ref{method:PCA} and \citealt{Ten98} Chap. 6 for our French readers.
+
+\paragraph{Analysing repeated measurement or a cross-over design}
+When different treatments are applied on the same subjects or samples, a multilevel approach is required to highlight subtle differences within individuals but between treatments against the large individual variation between individuals \citep{Liq12}. A \R{multilevel} argument is available in the mixOmics methods PCA, PLS-DA and PLS for this specific experimental design. Usually this type of design includes a very small number of time points or repeats (2 to 3).
+
+\paragraph{Multivariate analysis of microbial communities}
+The \R{mixMC} framework has been specifically developed for microbiome data analysis, and in particular 16S experiments. Challenges in microbiome data include sparse counts and uneven sequencing depth that require to convert counts into relative proportions, leading to \textit{compositional data}. This poses a problem in most statistical analyses performed on compositional data are not suitable for relative proportions, resulting in spurious results. We  use log ratio transformations, as proposed by \citet{Ait82} which is implemented in PCA and PLS methods \citep{Lec16}. We provide a short example in this workshop, see also \url{http://mixomics.org/mixmc/} for more examples.
+
+\paragraph{Integrating two data sets measured on the same individuals/samples (e.g. transcriptomics and proteomics data)}
+\begin{itemize}
+  \item To extract or highlight common information from two matching data sets:
+    \begin{itemize}
+      \item {\color{blue}Canonical Correlation Analysis (CCA)} \citep{Gon08} or {\color{blue}Partial Least Squares (PLS) canonical mode} when the total number of features is less than the number of samples. 
+      \item {\color{blue}regularized Canonical Correlation Analysis (rCCA)} \citep{Gon09} or {\color{blue}Partial Least Squares (PLS) canonical mode} when the total number of features is greater than the number of samples.
+    \end{itemize}
+\item To model a linear relationship between multiple \textit{continuous} responses in the $Y$ data set with multiple predictors (in the $X$ data set) we use  {\color{blue}Partial Least Squares (PLS)}, classic or regression mode. Example: to model or predict the expression of metabolites  in $Y$ given the expression of transcripts in $X$.
+    \item To select features (genes, proteins) from both data sets that \textit{covary} (i.e. `change together', or are `co-expressed') across all samples, in an \textit{unsupervised} framework, we use {\color{blue}sparse Partial Least Squares (sPLS)} with a suitable mode \citep{Lec08, Lec09a}.
+\end{itemize}
+
+\paragraph{$P-$ integration: integrating studies measured on the same variables}
+The Multivariate INTegrative method \R{MINT} extends multi-group analysis from \citep{Esl14} to combine different studies generated from different labs and technological platforms (Fig. \ref{fig:frameworkV6}). This is a great challenge as for data generated under similar biological conditions, the difference between these series of measurements is so large that it acts as a confounding factor in the combined analysis. This may lead to spurious relationships between the biological outcome of interest and the effect of the different technological platforms. This systematic error is often generally referred to as `batch effect' \citep{Roh16}. We are currently adding more functionalities to this module, contact us for more details, see also \url{http://mixomics.org/mixmint/}.
+
+
+
+
+
+
+
+
+% % % -----------------------------------------------
+% % %       Chapter: methods
+% % % ----------------------------------------------
+
+% % %PCA
+% \chapter{Principal Component Analysis}\label{method:PCA}
+% \SweaveInput{meth-PCA.Rnw}
+% 
+% 
+% \chapter{Case study with PCA on Multidrug data set}\label{study:MultidrugPCA}
+% \SweaveInput{case-study-Multidrug.Rnw}
+% 
+% %PLS-DA
+% \chapter{Discriminant Analysis}\label{method:PLSDA}
+% \SweaveInput{meth-PLSDA.Rnw}
+% 
+% \chapter{Case study with sPLS-DA on SRBCT data set}\label{study:SRBCT}
+% \SweaveInput{case-study-SRBCT.Rnw}
+% 
+% \chapter{Case study with PCA and sPLS-DA for 16S microbiome data (optional)}\label{study:mixMC}
+% \SweaveInput{case-study-microbiome.Rnw}
+% 
+% \chapter{Graphical outputs for integrative analyses}\label{graph:outputs}
+% \SweaveInput{meth-graphics.Rnw}
+% 
+% \chapter{$N-$ integration and example}\label{study:multiblock}
+% \SweaveInput{case-study-multiblock.Rnw}
+% 
+% 
+
+%% Xtra not shown
+
+% % \chapter{Multivariate analyses on Arabidopsis data, your turn!}\label{study:arabi}
+% % \SweaveInput{study-arabidopsis-short.Rnw}
+
+% % % % -----------------------------------------------
+% % % %       Appendix
+% % % % ----------------------------------------------
+\appendix
+% !Rnw root = mixOmics-material-short.Rnw
+
+\chapter{Mathematical background}
+% ===========================
+% section: PCA maths
+% ===========================
+
+\section{PCA}\label{math:PCA}
+
+The content of this section addresses mathematical aspects of PCA, sPCA and NIPALS which will be omitted during the workshop. \\
+
+\noindent
+In the package, PCA is numerically solved in two ways:
+\begin{itemize}
+  \item with singular value decomposition (SVD) of the data matrix, which is the most computationally efficient way and is also adopted by most softwares and the R function \R{prcomp()} in the stat package, 
+  \item with the Non-linear Iterative Partial Least Squares (NIPALS) in the case of missing values, which uses an iterative power method.
+\end{itemize}
+Both methods are embedded in the \R{mixOmics pca()} function and will be used accordingly.
+
+\subsection{Notations} 
+Suppose $X$ is a $ n \times p$ data matrix of rank $r$ (\mbox{rank}($X) = r$), with $n$ the number of samples (patients) and $p$ the number of variables.
+We will denote by $X_{h}$ the (current) residual matrices ($h = 1, \ldots ,r$) and by $x_{ij}^h$ the measurement of the variable $j$ in individual $i$ in the current matrix $X_h$ ($i = 1, \ldots ,n$; $j = 1, \ldots ,p$). %For example $a_j^h$ is the weight of the variable $j$ in the loading vector $a^{h}$.
+
+\subsection{Objective function}
+The objective function to solve is
+\begin{equation}\label{obj:PCA}
+\mbox{arg}\max_{||a^{h}|| = 1} \mbox{var}(Xa^h)
+\end{equation}
+
+\noindent where $a^{h}$ is the  $p-$ dimensional loading vector associated to the principal component $h$, $h = 1, \dots ,r$, under the constraints that $a^{h}$ is of unit (norm) 1 and is orthogonal to the previous loading vectors $a^m$, $m < h$. The principal component vector is defined as $t^h = Xa^h$.
+
+
+\subsection{PCA with Singular Value Decomposition}
+Equation \ref{obj:PCA} can be solved by computing the eigenvectors $a^1, \dots, a^r$ and associated eigenvalues $\delta^2, \dots, \delta^2$ of the variance covariance matrix $X^TX$ \footnote{In this material we only consider the case of the Identity metric to measure the distance between samples. This is generally the default case in statistical softwares}. The eigenvalues are ordered $\delta^1 \leq \delta^2 \leq \dots \leq \delta^r$ and are proportional to the amount of explained variance on each dimension (component).\\
+
+\noindent
+A more efficient way is to use the Singular Value Decomposition (SVD) of the data matrix $X$:
+$$
+X = U\Delta A^T
+$$
+where the columns of $U$ are orthogonal and of norm 1 and the columns of $A$ are the loading vectors. The matrix $\Delta = \mbox{diag}(\delta_1, \dots, \delta_r)$ contains the singular values (the square roots of the eigenvalues of $X^TX$). The principal components are the columns of $T = U \Delta$. \\
+
+Computing the SVD of $X$ is more efficient that calculating the matrix product $X^TX$ which is of size $p \times p$. The SVD is nowadays the standard way to calculate PCA.
+
+
+\subsection{PCA with Non-linear Iterative Partial Least Squares algorithm}\label{math:NIPALS}
+We have seen that PCA seeks for the vectors $a^h$ that maximize the variance of the associated principal components and that the principal components are defined as $t^h = Xa^h$ ($h = 1, \dots, r$). \\
+
+The iterative way of solving PCA can be summarised in this algorithm \citep{Ten98}:
+\medskip
+
+\begin{algo}\label{algo:NIPALS} NIPALS with no missing values.
+\begin{itemize}
+  \item Initialize $X_0 = X$
+  \item For $h$ in $1,\ldots ,r$:
+  \begin{enumerate}
+    \item \label{itm:nipals.init} Initialize $t^1 = \delta_1 a^1$ using the first left singular vector and singular value of SVD($X$) %\footnote{Originally, this initialization step proposed}    
+    %X_h[,1]$ %the component $t^h$ to the first column of the current data matrix:
+    \item \label{itm:nipals.conv} Until convergence of $a^h$:
+      \begin{enumerate}
+        \item \label{itm:nipals.reg1} $a^h = X_{h-1}^T t^h / t^{h'}t^h$
+        \item Norm $a^h$ to 1
+        \item \label{itm:nipals.reg2} $t^h = X_{h-1} a^h$ % / \boldsymbol{v}_{h'}\boldsymbol{v}_h$
+      \end{enumerate}
+      \item \label{itm:nipals.defla} $X_{h} = X_{h-1} - t^ha^{h'}$
+    \end{enumerate}
+\end{itemize}
+\end{algo}
+\bigskip
+
+Step \ref{itm:nipals.reg1} performs a \textbf{local regression} of each variable $j$ ($x_{h-1,j}$) onto the component $t^h$ to obtain the associated weight of each variable. We can therefore consider $a^{h}$ as the slope of the means squares regression line between the $n$ data points $(t_{h, i}, x_{h-1,ji})$, $j = 1, \dots ,n$, $i = 1, \dots ,p$. Similarly in step \ref{itm:nipals.reg2}, each element in $t^{h}$ ($t_{h,i}$) is the regression coefficient of $x_{h-1,ji}$ onto $a^{h}$. \\
+
+Step \ref{itm:nipals.defla} is called the \textbf{deflation step}, where $X_{h}$ is the residual matrix of the regression of $X_{h-1}$ onto $t^h$. From this step we can see how the algorithm is iteratively decomposing the matrix $X$ with a set of vectors ( $t^h, a^{{h'}}$) for each dimension $h$.\\
+
+Since NIPALS performs local linear regressions for each PCA dimension, it becomes easier to understand how the algorithm can deal with missing values. The absence of some values in the variables $j$ does not indeed impede (too much) on the local regressions (steps \ref{itm:nipals.reg1} and \ref{itm:nipals.reg2}), as these are fitted on the existing values. The missing values are reconstructed using the formula
+\begin{equation}\label{eq:nipals}
+\hat{x}_{ji} = \sum_{l=1}^h t_{li}a_{li},
+\end{equation}
+where $x_{ji}$ is the missing value for sample $i$ and variables $j$ and $\hat{x}_{ji}$ is the estimation of the missing value. We can see from Equation \ref{eq:nipals} that the estimation is made to the order $h$, where $h$ is the chosen number of components in NIPALS. This explains why NIPALS requires quite a large number of components in order to estimate these missing values. \\
+
+Note that in the case of missing values, the component $t^h$ is initialised to the first column of the current data matrix in step \ref{itm:nipals.init}: $t^h = X_{h-1}[\;,1]$.   
+
+
+\subsection{sparse PCA}\label{meth:sPCA}
+Sparse PCA from \citet{She07} uses the low rank approximation property of the SVD and the close link between low rank approximation of matrices and least squares regression (as highlighted above with NIPALS).\\
+\noindent
+We define the Frobenius norm between $X$ and its rank-$l$ matrix $X^{(l)}$ as:
+$$
+ ||X - X^{(l)}||^2_F = \mbox{trace}\{ (X - X^{(l)})(X - X^{(l)})^T \}.
+$$
+And we define the closest rank-$l$ matrix approximation to $X$ in terms of the squared Frobenius norm as:
+\begin{equation}\label{sPCA:rank}
+  X^{(l)} \equiv \sum_{k=1}^l \delta_k u^k a^{k'}.
+\end{equation}
+From Equation \ref{sPCA:rank}, we can understand how to obtain the best rank-$1$ approximation of $X$ by seeking the $n$- and $p$- dimensional vectors $t$ and $a$ (both of norm 1)
+
+$$
+ \min_{t, a}||X - t a'||^2_F,
+$$
+which we can solve by using the first left and right singular vectors $(u^1, a^1)$ from the SVD: $t = \delta_1 u^1$ and $a =  a^1$. The second set of vectors will give the best approximation of the rank-2 of $X$ (or equivalently of $X - \delta_1 u^1 a^{1'}$). \\
+
+Steps \ref{itm:nipals.reg1} and \ref{itm:nipals.reg2} in Section \ref{math:NIPALS} explained how least squares regressions are performed within the PCA framework to obtain $a$ as a regression of $X$ on a fixed $t$. In such a regression context, it is then possible to apply regularization penalties on $a$ to obtain a \textbf{sparse} loading vector and therefore perform variable selection. \\
+\noindent
+The objective function of sPCA can be written as
+$$
+ \min_{t, a}||X - t a'||^2_F + P_{pen}(a),
+$$
+where $P_{pen}(a)$ % = \sum_{i=1}^p P_{pen}(|{v}_i|)$ 
+is a penalty function with the tuning parameter $pen$ that is applied on each element of the vector $a$. The sPCA version in \R{mixOmics} implements the soft thresholding ($L_1$ or Lasso, \citealt{Tib96}) penalty which is applied on each variable $i$ as follows:
+$$
+  P_{pen}({a}^i) = \mbox{sign}({a}^i)(|{a}^i| - pen)_+,
+$$
+with the notation $(x)_+ \Leftrightarrow x = 0 \quad \mbox{if} \quad  x \leq 0 \quad \mbox{and} \quad x = x \quad \mbox{otherwise}$. The penalisation results in a loading vector with many 0 values for the variables that are considered irrelevant for the local regression in step \ref{itm:nipals.reg1}. Since $t = Xa$, the consequence is that the principal component $t$ is now calculated on a subset of relevant variables with non-zero weights in the sparse loading vector. The selected variables can be extracted by looking at the non-zero elements in the loading vector (see the function \R{select.var()}). \\
+
+In \R{mixOmics} the penalty $pen$ has been replaced by the number of variables to select \argu{keepX} for practical reasons, but both criteria are equivalent. See Section \ref{tuning:sPCA} for the tuning of that parameter.\\
+
+The pseudo code below explains how to obtain a sparse loading vector associated to the first principal component.
+\medskip
+
+\begin{algo}\label{algo:sPCA} sparse PCA for the first dimension $\boldsymbol{h = 1}$.
+  \begin{enumerate}
+    \item Extract the first left and right singular vectors (of norm 1) of the SVD($X_h$) to initialize 
+    
+    $t^1 = \delta_1  u^1$ and $a^h = a^1$
+    \item Until convergence of $a^h$:
+      \begin{enumerate}
+        \item $a^h = P_{pen}(X_h^T t^h)$
+        \item $t^h =  X_h a^h$
+        \item Norm $t^h$ to 1
+      \end{enumerate}
+      \item Norm $a^h$ to 1  
+  \end{enumerate}
+\end{algo} 
+\bigskip
+
+Since sPCA is an iterative procedure, we can then include algorithm \ref{algo:sPCA} into step \ref{itm:nipals.conv} of the NIPALS algorithm \ref{algo:NIPALS} to extend the sPCA to the following components. \\
+
+The sparse loading vectors are computed componentwise which results in a list of selected variable per component. The deflation step `should' ensure that the loading vectors are orthogonal to each other (i.e. different variables selected on different dimensions), but that also depends on the degree of penalty applied.
+
+% =======================
+% Section: Cor / var-cov
+% ======================
+\section{Correlation and variance-covariance matrices}\label{appendix:cov}
+  The covariance matrix (also known as dispersion matrix or variance - covariance matrix) is fundamental to several statistical analyses, including PLS and CCA methods. It generalizes the notion of variance to multiple variables. \\
+  A close cousin to the covariance matrix is the \textbf{correlation matrix}, which is a table reporting every pairwise correlation between two numerical variables. \\
+\paragraph{Example.}
+  Pearson's correlation matrix on the Iris data with the 4 variables \texttt{Sepal.Length, Sepal.Width, Petal.Length, Petal.Width}:
+\begin{Schunk}
+\begin{Soutput}
+             Sepal.Length Sepal.Width Petal.Length Petal.Width
+Sepal.Length    1.0000000  -0.1175698    0.8717538   0.8179411
+Sepal.Width    -0.1175698   1.0000000   -0.4284401  -0.3661259
+Petal.Length    0.8717538  -0.4284401    1.0000000   0.9628654
+Petal.Width     0.8179411  -0.3661259    0.9628654   1.0000000
+\end{Soutput}
+\end{Schunk}
+We can see that there is a high correlation between Sepal and Petal Length ($\textbf{r} = 0.87$).\\
+
+The correlation matrix is symmetric and all the correlations on the diagonal are equal to 1  as they are the correlation of each variable with itself. \\
+
+A \textbf{covariance matrix} for a data matrix composed of 4 variables can be written as:
+$$  
+ \begin{pmatrix}
+\mbox{Var}_{1} & \mbox{Cov}_{1,2} &  \mbox{Cov}_{1,3} &  \mbox{Cov}_{1,4} \\
+  \mbox{Cov}_{2,1} &  \mbox{Var}_{2} &  \mbox{Cov}_{2,3} & \mbox{Cov}_{2,4} \\
+  \mbox{Cov}_{3,1} &  \mbox{Cov}_{3,2} &  \mbox{Var}_{3}  & \mbox{Cov}_{3,4} \\
+  \mbox{Cov}_{4,1} &  \mbox{Cov}_{4,2} & \mbox{Cov}_{4,3} \ & \mbox{Var}_{4} \\
+ \end{pmatrix}
+$$  
+A covariance matrix is very similar to a correlation matrix, except for two differences:
+\begin{enumerate}
+  \item The covariance between two variables is an \textit{unstandardized} version of their correlation (remember that in the correlation coefficient we divide the covariance by the standard deviation of both variables to remove units of measurement).  The covariance is therefore a correlation measured in the units of the original variables.
+  \item Contrary to the correlation coefficient, the covariance coefficient is not between -1 or 1. Similar to a correlation coefficient, a value of 0 indicates no linear relationship.
+\end{enumerate}
+Note that since the covariance is in the original units of the variables, variables on scales with bigger numbers, and with wider distributions, will necessarily have bigger covariances.
+%Because covariance is in the original units of the variables, variables on scales with bigger numbers, and with wider distributions, will necessarily have bigger covariances. So for example, Life Span has similar correlations to Weight and Exposure while sleeping, both around .3.
+Below is the variance-covariance matrix of the Iris data:
+\begin{Schunk}
+\begin{Soutput}
+             Sepal.Length Sepal.Width Petal.Length Petal.Width
+Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707
+Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394
+Petal.Length    1.2743154  -0.3296564    3.1162779   1.2956094
+Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063
+\end{Soutput}
+\end{Schunk}
+
+
+
+% ===============================
+% section: PLS-DA maths
+% ===============================
+\section{PLS-DA}\label{math:PLSDA}
+The content of this section addresses mathematical aspects of PLS-DA and sPLS-DA which will be omitted during the workshop. 
+
+\paragraph{Notations.} We denote $X$ is a $ n \times p$ data matrix, $Y$ is a factor vector of length $n$ that indicates the class of each sample, and $Y^{*}$ is the associated dummy matrix  $ n \times K$ data matrix (see Table \ref{Tab_yY}), with $n$ the number of samples (individuals), $p$ the number of variables and $K$ the number of classes. %We will denote by $X^j$ the vector variables in the $X$ and the $Y$ datasets ($j = 1,\ldots ,p$ and $k = 1,\ldots ,q$). \\  
+
+The objective function to solve is the same as the classical PLS objective function and involves maximizing the covariance between each linear combination of the variables from both groups. 
+  $$ \arg \max_{||a^h||=1,\, ||b^h||=1} \mbox{cov}(X a^h, Y^{*} b^h) \qquad h= 1, \ldots ,H.
+	$$
+
+The \textbf{loading vectors} are the vectors $a^h$ and $b^h$ for each PLS dimension $h$, and the associated \textbf{latent variables} are denoted $t^h = X a^h$  and $u^h = Y^{*}b^h$. The loading vectors $a^h$ and $b^h$ are the $h$th left and right singular vector of the singular value decomposition (SVD) of $X'Y^{*}$ respectively for each iteration or dimension $h$ of the PLS. \\
+
+  \subsection{Prediction with PLS-DA}
+
+For a classification context, where the aim is to predict the class of new samples in a trained model, the PLS model used has a regression mode that is set internally in the function in \texttt{mixOmics}. The PLSDA model is formulated as:
+$$ Y^{*} = X \beta + E,
+$$
+where $\beta$ is the matrix of the regression coefficients and $E$ is the residual matrix, see more details in Section \ref{math:PLSDA}. The prediction of a new set of samples is then
+$$ Y^{*}_{new} = X_{new} \beta,
+$$
+Several \textbf{distances} were implemented to identify/predict the class membership of each new sample (each row in $Y^{*}_{new}$), as described below. 
+
+%. For example, we can assign the predicted class as the column index of the element with the largest predicted value in this row (\R{method.predict = max.dist} in the \R{predict()} function). We give more mathematical details of the prediction distances in \citealt{mixOmics} supplemental material. 
+
+\paragraph{Prediction distances.}
+\begin{itemize}
+  \item \argu{method.predict = "max.dist"} is the simplest method to predict the class of a test sample.  For each new individual, the class with the largest predicted score is the predicted class. In practice we found that this distance worked well for multiclass problems \cite{Lec11}.
+\end{itemize}
+
+
+For the centroid-based distances, we first calculate the centroid $G_k$ of all the learning set samples belonging to the class $k \le K$ based on the $H$ latent components $t^h$ associated to $X$. Both `Mahalanobis distance' and `Centroids distance' distances are applied on the predicted scores. 
+\begin{itemize}
+\itemsep0em 
+  \item  \argu{method.predict = "centroids.dist"} allocates the new sample the class that mimimises the Euclidean distance dist($t^h$, $G_k$). 
+
+  \item \argu{method.predict = "mahalanobis.dist"} uses the Mahalanobis metric in the calculation of the distance.
+\end{itemize}
+
+In practice we found that the centroid-based distances, and specifically the Mahalanobis distance led to more accurate predictions than the maximum distance for complex classification problems and N-integration problems. The centroid distances consider the prediction in a $H$ dimensional space using the predicted scores, while the maximum distance considers a single point estimate using the predicted dummy variables on the last dimension of the model. More details are given in \citealt{Roh17} supplemental material.
+
+We choose the prediction distance that leads to the best performance of the model, as output from the functions \R{tune()} and \R{perf()}\!\!.
+
+\subsection{sparse PLS-DA}
+The extension of sparse PLS to a supervised classification framework consists in coding 
+the response matrix $Y$ of size $(n \times K)$ with dummy variables to indicate the class membership of each sample. Note that in this specific framework, we will \textit{only perform variable selection on the $X$ data set}, i.e., we want to select the discriminative features that can help predicting the classes of the samples. The $Y$ dummy matrix remains unchanged. Therefore, we set $M_h = X_h' Y_h$ and the optimization problem of the sPLS-DA can be written as:
+$$
+   \min_{a,b} ||M - ab'||^2_{F} + P_{\lambda}(a),
+$$
+Therefore, the penalization parameter to tune is $\lambda$.
+
+
+% ===========================
+% section: graphics maths
+% ===========================
+\section{Graphical outputs}\label{math:graphic}
+In this Section, we will use the following notations: $X$ is a $ n \times p$ data matrix, and  $Y$ is a $ n \times q$ data matrix, with $n$ the number of samples (patients), $p$ and $q$ the number of variables (parameters).
+
+\subsection{Pair-wise variable associations for CCA}
+The association measure in CCA is analogous to a correlation coefficient. 
+Firstly, similar to a correlation circle output, the $X^j$ and $Y^k$ variables are projected onto a lower dimensional space. Let $d\leq \min(p,q)$ the selected dimensions to adequately account for the data association, and let $z^{l}=t^{l}+u^{l}$ the equiangular vector between the canonical variates $t^{l}$ and $u^{l}$ ($l=1,\ldots ,d$), and $Z$ is a matrix containing all the $z^l$ vectors in column. The coordinates of the variable $X^j$ and $Y^k$ are obtained by projecting them on the axes defined by $z^{l}$. The projection on the $Z$ axes seems the most natural as $X$ and $Y$ are symmetrically analysed in CCA. \citet{saporta06}
+showed that the $Z$ vectors have the property to be the closest to $X$ and $Y$, i.e. the sum of their squared multiple correlation coefficients with $X$ and with $Y$ is maximal. \\
+
+\noindent
+Let $\mathbf{\tilde{x}}^j=(x_{1}^j,\ldots ,x_{d}^j)'$ and $\mathbf{\tilde{y}}^k=(y_{1}^k,\ldots ,y_{d}^k)'$ the coordinates of the variable $X^j$ and $Y^k$ respectively on the axes defined by $z^{1},\ldots ,z^{d}$. These coordinates are obtained by computing the scalar innerproduct $x_{l}^j=\left\langle X^j,z^{l}\right\rangle$ and $y_{l}^k=\left\langle Y^k,z^{l}\right\rangle$ ($l=1,\ldots ,d$). As the variables $X^j$ and $Y^k$ are assumed to be of unit variance, the innerproduct is equal to the correlation between the variables $X$ (or $Y$) and $Z$: $x_{l}^j=\textrm{cor}(X^j,z^{l})$ and $y_{l}^k=\textrm{cor}(Y^k,z^{l})$. \\
+
+\noindent
+Then, for any two variables $X^j$ and $Y^k$, a similarity score can be computed as follows:
+\begin{equation}
+M_k^j=\langle \mathbf{\tilde{x}}^j,\mathbf{\tilde{y}}^k\rangle=(\mathbf{\tilde{x}}^j)'\mathbf{\tilde{y}}^k\, ,
+\label{M_ac}
+\end{equation}
+
+\noindent where $0\leq |M_j^k|\leq 1$. The matrix $M$ can be factorized as $M=\mathbf{x}\mathbf{y}'$ with $\mathbf{x}$ and $\mathbf{y}$ matrices of order $(p\times d)$ and $(q\times d)$ respectively. When $d=2$, $M$ is represented in the correlation circle by plotting the rows of $\mathbf{x}$ and the rows of $\mathbf{y}$ as vectors in a $2$-dimensional Cartesian coordinate system. Therefore, the innerproduct of the $X^j$ and $Y^k$ coordinates is an approximation of their association score.
+
+
+\subsection{Pair-wise variable associations for PLS}\label{math:pairwise} 
+For PLS regression mode, the association score $M_k^j$ between the variables $X^j$ and $Y^k$ can be obtained from an approximation of their correlation coefficient. Let $r$ the rank of the matrix $X$, PLS regression mode allows for the decomposition of $X$ and $Y$ by %\cite{tenenhaus95}:
+\begin{eqnarray}
+  &&X=t^1(\phi^1)'+t^2(\phi^2)'+\cdots +t^r(\phi^r)'\label{dec_x}\\ \nonumber \\
+  &&Y=t^1(\varphi^1)'+t^2(\varphi^2)'+\cdots +t^r(\varphi^r)'+E^{(r)}\label{dec_y}
+\end{eqnarray}
+
+\noindent where $\phi^l$ and $\varphi^l$, are the regression coefficients on the variates $t^1,\ldots ,t^r$, and $E^{(r)}$ is the residual matrix ($l=1,\ldots ,r$). By denoting $\xi_l$ the standard deviation of $t^l$, using the orthogonal properties of the variates and the decompositions in (\ref{dec_x}) and (\ref{dec_y}), we obtain $h_{l}^j=\textrm{cor}(X^j,t^{l})=\xi_l\phi_j^l$ and $g_{l}^k=\textrm{cor}(Y^k,t^{l})=\xi_l\varphi_k^l$. Let $s<r$ the number of components selected to adequately account for the variable association, then for any two variables $X^j$ and $Y^k$, the similarity score is defined by:
+\begin{equation}
+M_k^j=\langle h^j,g^k\rangle=\sum_{l=1}^s h_{l}^j g_{l}^k=\sum_{l=1}^s \xi_l^2 \phi_j^l \varphi_k^l \approx\textrm{cor}(X^j,Y^k)\, ,
+\label{M_pls}
+\end{equation}
+\noindent
+where $h^j=(h_{1}^j,\ldots ,h_{s}^j)'$ and $g^k=(g_{1}^k,\ldots ,g_{s}^k)'$ are the coordinates of the variable $X^j$ and $Y^k$ respectively on the axes defined by $t^{1},\ldots ,t^{s}$. When $s=2$, a correlation circle representation is obtained by plotting $h^j$ and $g^k$ as points in a 2-dimensional Cartesian coordinate system. \\
+
+For PLS canonical mode, the association score $M_k^j$ is calculated by substituting $g_{l}^k=\textrm{cor}(Y^k,u^{l})$ in (\ref{M_pls}) for $l=1,\ldots ,s$, as in this case the decomposition of $Y$ is given by: 
+$$Y=u^1(\varphi^1)'+u^2(\varphi^2)'+\cdots +u^r(\varphi^r)'+E^{(r)}$$
+where $\varphi^l$ ($l=1,\ldots ,r$), are the regression coefficients on the variates $u^1,\ldots ,u^r$. Then, 
+$$\textrm{cor}(X^j,Y^k)\approx\sum_{l=1}^s \xi_l\sigma_l\phi_j^l\varphi_k^l=M_k^j$$
+\noindent
+where $\sigma_l$ the standard deviation of $u^l$.
+
+
+\subsection{Constructing Relevance Networks}
+% A conceptually simple approach for modelling net-like correlation structures between two data sets is to use \textit{Relevance Networks}. This concept was introduced by \citet{butte00a} as a tool to study associations between couples of variables coming from several types of genomic data. This method generates a graph where nodes represent variables, and edges represent variable associations. The Relevance Network is built in the following simple manner. First, the correlation matrix is inferred from the data. Second, for every estimated correlation coefficients exceeding a prespecified threshold between two variables (say 0.6 in our examples), an edge is drawn between these two variables.
+% 
+% The construction of biological networks (gene-gene, protein-protein, etc.) with direct interactions within a variable set is of considerable interest amongst biologists, and has been extensively used in the literature. Therefore, we will not consider this case and rather focus on the representation between $X$ and $Y$ data sets, i.e., the representation of variables of two different types. We will thus display rCCA, sPLS-can and sPLS-reg Relevance Networks through the use of bipartite graph (or bigraph), that is, every node of one variable set $X$ is connected to nodes of the other variables set $Y$ only. 
+
+The bipartite networks are inferred using the pair-wise association matrix $M$ defined in (\ref{M_ac}) and (\ref{M_pls}) for CCA and PLS results respectively. Entry $M_k^j$ in the matrix $M$ represents the association score between $X^j$ and $Y^k$ variables. Then, by setting a user-defined score threshold, the pairs of variables $X^j$ and $Y^k$ with a $|M_k^j|$ value greater than the threshold will be aggregated in the Relevance Network. By changing this threshold, the user can choose to include or exclude relationships in the Relevance Network. This option is proposed in an interactive manner in \R{mixOmics}. \\
+
+Relevance networks for rCCA assume that the underlying network is fully connected, i.e. that there is an edge between any pair of $X$ and $Y$ variables. For sPLS, relevance networks only represent the variables selected by the model. In that case, $M_k^j$ pair-wise associations are calculated based on the selected variables. 
+
+\subsection{Displaying  CIM}
+The CIM representation is based on the pair-wise similarity matrix $M$ defined in (\ref{M_ac}) and in (\ref{M_pls}) for CCA and PLS respectively.
+%on a hierarchical clustering simultaneously operating on the rows and columns of a real-valued similarity matrix $M$. The initial matrix is graphically represented as a 2-dimensional colored image, where each entry of the matrix is colored on the basis of its value, and where the rows and columns are reordered according to a hierarchical clustering. Dendrograms resulting of the clustering are added to the left (or right) side and to the top (or bottom) of the image. With rCCA, sPLS-can and sPLS-reg, we chose to display CIM based
+
+
+
+% ===========================
+% section: multiblock maths
+% ===========================
+\section{$N-$integration}\label{math:Ninteg}
+
+%The deflation performed in the whole $N$-integration framework is set internally to `canonical' (a specific deflation step also performed in PLS see Chapter \ref{method:PLS}). 
+\subsection{$N-$integration methods and input}
+\begin{enumerate} \itemsep0em
+	\item \R{block.splsda()} extends sPLS-DA and is called \textbf{DIABLO} in our manuscript \citealt{Sin16}
+		\begin{itemize} \itemsep0em
+		\item Outcome factor $Y$
+		\item Input lasso parameter \argu{keepX}
+	\end{itemize}
+	\item \R{wrapper.rgcca()} extends rCCA (unsupervised, \citealt{Ten11}), improved from the RGCCA package.
+	\begin{itemize} \itemsep0em
+		\item Input regularization parameter \argu{tau}
+	\end{itemize}
+	
+	\item \R{wrapper.sgcca()} extends rCCA with variable selection (unsupervised, \citealt{Ten14}), improved from the RGCCA package.
+	\begin{itemize}
+		\item Input lasso parameter \argu{keepX}
+	\end{itemize}
+	
+	\item \R{block.spls()} extends sPLS.
+		\begin{itemize} \itemsep0em
+		\item Continuous variable / matrix $Y$ as response
+		\item Input lasso parameter \argu{keepX, keepY}
+	\end{itemize}
+\end{enumerate}
+
+\subsection{regularized GCCA}
+
+The rGCCA optimization problem to solve is:
+\begin{equation}\label{eq:rgcca}
+\max_{\boldsymbol{a}^1, \dots, \boldsymbol{a}^J} \sum_{j, k=1, j \neq k}^{J} c_{kj}g(\mbox{Cov}(\boldsymbol{X}_j\boldsymbol{a}^j, \boldsymbol{X}_k\boldsymbol{a}^k)) \newline
+\quad \mbox{subject to} \quad   \tau_j ||\boldsymbol{a}^j||^2 + (1 - \tau_j) \mbox{Var}(\boldsymbol{X}_j\boldsymbol{a}^j) = 1
+\end{equation}
+with $j = 1, \dots, J$ and $\boldsymbol{a}^j$ are the loading vectors associated with each block $j$. The function $g$ can be defined as:
+\begin{itemize} \itemsep0em
+  \item $g(x) = x$ is the Horst scheme. This is what is used in the classical PLS / PLS-DA in \R{mixOmics}
+  \item $g(x) = |x|$ is the centroid scheme, which is the scheme we illustrate in this case study,
+  \item $g(x) = x^2$ is the factorial scheme.
+\end{itemize}
+The Horst scheme requires a positive correlation between linear combinations of pairwise data sets, while the centroid and the factorial scheme enable a negative correlation between the components. In practice, we have found that the \R{scheme = 'horst'} gave satisfactory results and this is set up as a default parameter in our methods. \\
+
+\noindent
+The \textbf{regularization parameters} \R{tau} on each block $j$ $(\tau_1, \tau_2, \dots, \tau_J)$ is internally estimated from the rGCCA method using shrinkage formula from \citet{Sch05} (also used in rCCA, not covered in this workshop). Those parameters enable to numerically inverse large variance-covariance matrices. %We use the same method that was presented for rCCA (see Chapter \ref{method:CCA}).
+
+\paragraph{Remark.} The function to call is \R{wrapper.rgcca()}, see\R{?wrapper.rgcca} for some examples. %Note that the function name is likely to change in the near future.
+
+\subsection{sparse GCCA}
+In the same vein as sparse PLS \citep{Lec08}, sparse GCCA includes Lasso penalisations on the loading vectors $\boldsymbol{a}^j$ associated to each data block to perform variable selection.  In practice we will specify the arguments \argu{keepX, keepY} in the function \R{block.spls()} to indicate the number of variables to retain in each block and for each component. \\
+Using the same notations as in Equation \ref{eq:rgcca}, the optimization problem to solve is:
+\begin{equation}\nonumber
+\max_{\boldsymbol{a}^1, \dots, \boldsymbol{a}^J} \sum_{j, k=1, j \neq k}^{J} c_{kj}g(\mbox{Cov}(\boldsymbol{X}_j\boldsymbol{a}^j, \boldsymbol{X}_k\boldsymbol{a}^k)) \newline
+\quad \mbox{subject to} \quad   ||\boldsymbol{a}^j||_2 = 1 \quad \mbox{and} \quad  ||\boldsymbol{a}^j||_1 \leq \lambda_j
+\end{equation}
+where $\lambda_j$ is the Lasso penalization on each block $j$. There is a direct correspondence between the Lasso parameter value and the number of variables to select in the arguments \argu{keepX, keepY}.
+
+\paragraph{Remark.}  In the sparse GCCA, we do not need any regularization parameters \argu{tau} as the model is parsimonious (sparse). We will not give any example on \R{?block.spls()} as this method is still in development.
+%\paragraph{Remark 2.} The Lasso penalty \argu{penalty} is a value between 0 (no variable selection) and 1 (all variables selected) that is used instead of the sPLS parameter \R{keepX} for convergence reasons \footnote{In a future update we will be able to provide a function with \R{keepX} instead of \R{penalty}}.
+
+
+
+% ------------------ references -----------------
+\bibliographystyle{natbib}
+\bibliography{mybib}
+
+
+\end{document}

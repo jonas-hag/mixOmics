@@ -1,0 +1,193 @@
+# Projection to Latent Structure (PLS) {#pls}
+
+```{r echo=FALSE, message=FALSE}
+library(mixOmics)
+```
+
+## Biological question
+
+> *I would like to know if I can extract common information from the two data sets or highlight the relationships between the two data sets.*
+
+## The nutrimouse data set
+
+The `nutrimouse`data set is a list containing the following components:
+
+A list containing the following components:
+
+- `gene` data frame with 40 observations on 120 numerical variables.
+
+- `lipid` data frame with 40 observations on 21 numerical variables.
+
+- `diet` factor of 5 levels containing 40 labels for the diet factor.
+
+- `genotype` factor of 2 levels containing 40 labels for the diet factor.
+
+More details are available with `?nutrimouse`.
+
+To illustrate PLS, we try to unravel the relationships between the expression of the genes (`gene`) and the concentrations of hepatic fatty acids (`lipid`).
+
+## Principle of the method
+
+PLS is a multivariate projection-based method that can address many types of problems. It is extremely efficient when p + q >> n. As it performs local regression (see Section A.6.1) and unlike CCA, PLS is not limited by the number of variables and the computational issues due to the inversion of large singular matrices. Unlike PCA which maximizes the variance in a single data set, PLS maximizes the covariance between two data sets by seeking for linear combinations of the variables from both sets. The mathematical concepts of covariance and correlation are similar, but the covariance is an unbounded measure and covariance has a unit measure. These linear combinations are called latent variables or latent components. The weight vectors that are used to compute the linear combinations are called the loading vectors. Both latent variables and loading vectors come in pairs (one for each data set).
+
+PLS performs successive regressions using projections onto latent vectors to highlight underlying biological effects. The PLS components (latent variables) are linear combinations of the initial variables. However, the coefficients that define these components are not linear, as they are solved via successive local regressions on the latent variables. Furthermore, the PLS goes beyond a simple regression problem since a X and Y are simultaneously modelled by successive decompositions.
+
+The objective function maximizes the covariance between each linear combination of the variables from both groups.
+
+The loading vectors are the vectors a h and b h for each PLS dimension h, and the associated latent variables are denoted $t^h = Xa^h$ and $u^h = Yb^h$ . Similar to PCA, the loading vectors a h and b h are directly interpretable, as they indicate how the $X^j$ and $Y^k$ variables can explain the relationships between X and Y. The latent variables $t^h$ and $u^h$ contain the information regarding the similarities or dissimilarities between individuals or samples.
+
+## Quick start
+
+```{r fig.show='hide'}
+data(nutrimouse)
+X <- nutrimouse$lipid  
+Y <- nutrimouse$gene
+
+MyResult.pls <- pls(X,Y)  # 1 Run the method
+plotIndiv(MyResult.pls)   # 2 Represent individuals
+plotVar(MyResult.pls)     # 3 Represent variables
+```
+
+Running the `pls` with no arguments consists in using the default values that are, for the most important:
+
+- `ncomp=2`: the first two PLS components are calculated and can be used for graphical outputs;
+- `scale = TRUE`: data are scaled (variance= 1);
+- `mode = "regression"`: ** ??? **
+
+The function `plotIndiv` produces 2 plots corresponding to the individuals projected on the two sub-spaces spanned from X-variables and from Y-variables. One single plot can be displayed using optional arguments, see section \@ref(pls-tgf).
+
+## To go further  {#pls-tgf}
+
+### Customize plots
+
+Individual plots can be customized in many ways. Have a look at `help(plotIndiv)` for examples. 
+
+```{r fig.show='hide'}
+plotIndiv(MyResult.pls, group=nutrimouse$genotype,
+          rep.space = "XY-variate",  legend = TRUE,
+          ind.names = nutrimouse$diet)
+```
+
+```{r}
+plotIndiv(MyResult.pls, group=nutrimouse$diet,
+          rep.space = "XY-variate",  legend = TRUE,
+          ind.names = FALSE, pch=nutrimouse$genotype)
+```
+
+Only one plot is produce here by `plotIndiv` because we modified the `rep.space` argument to project the individuals in the median plane using `"XY-variate"`. Providing a factor (here `genotype` or `diet`) to the  argument `group` produce a color coding depending on the category of the factor. A second factor can be displayed with symbols (argument `pch`). The appropriate legend can be displayed accordingly with `legend=TRUE`.
+
+Regarding the variable plots, once again the help file (`help(plotVar)`) contains many examples illustrating ways to customize plots. The example proposed here change the size of the labels.
+
+```{r fig.show='hide'}
+plotVar(MyResult.pls, cex=c(3,2))
+```
+
+Have a look at `example(plotVar)` to determine the most relevant options for your own plots.
+
+### Other meaningful plots
+
+Other plots can be displayed to make easier the interpretation of variables.
+
+A clustered image map can be produced using the `cim` function. 
+```{r eval=FALSE}
+cim(MyResult.pls)
+```
+
+Base on the same numerical output as the previous image, a network can also be displayed. To make easier the interpretion of such a plot, a cutoff can be set. An interactive facility is proposed through the optional argument `interactive`. When set to `TRUE`, a scrollbar is created to change the cutoff value interactively.
+
+```{r eval=FALSE}
+network(MyResult.pls, cutoff=0.6)
+```
+
+Regarding individuals, an arrow plot can be displayed to assess the overlapping of the X-variate and the Y-variate spaces. One arrow is plotted per individual; it starts at the coordinates of the individual on the X-variate space and ends a the coordinates in the Y-variate space. The shorter the arrows, the more related the data sets.
+
+```{r fig.show='hide'}
+plotArrow(MyResult.pls)
+```
+
+This plot can also be customized as a `plotIndiv` output adding colors and legend for instance.
+
+```{r}
+plotArrow(MyResult.pls, group = nutrimouse$diet, legend=TRUE)
+```
+
+### Variable selection
+
+ In addition to biological addresses by PLS,
+ 
+ > *I would like to select the variables from both data sets that covary (i.e. 'change together') across the different conditions*.
+
+Variable selection can be highly meaningful when adressing an integration issue with a large amount of variables. It can be run for PLS using the `spls` function. Then graphical outputs can be obtained in the same way as for PLS.
+
+```{r}
+MyResult.spls <- spls(X,Y, ncomp=3, keepX=c(3,3,3), keepY=c(10,10,10))
+```
+```{r eval=FALSE}
+plotIndiv(MyResult.spls)
+plotVar(MyResult.spls)
+cim(MyResult.spls)
+```
+
+The selected variables can be extracted using the `selectVar` function for further analysis.
+
+```{r}
+MySelectedVariables <- selectVar(MyResult.spls, comp=1)
+MySelectedVariables$X$name # Selected lipids on component 1
+MySelectedVariables$Y$name # Selected genes on component 1
+```
+
+### Tuning parameters
+
+```{r eval=FALSE}
+MyResult.spls2 <-  spls(X,Y, ncomp=10,
+                        keepX=c(3,3,3), keepY=c(10,10,10))
+tune.spls <- perf(MyResult.spls2, validation = "Mfold", folds = 5,
+                  progressBar = FALSE, nrepeat = 10)
+plot(tune.spls$Q2.total)
+abline(h = 0.0975)
+```
+
+```{r eval=FALSE}
+list.keepX <- c(5:10, seq(15, 50, 5))
+# tuning based on MSE (the lowest MSE value)
+tune.spls.MAE <- tune.spls(X, Y, ncomp=3,
+                           test.keepX = list.keepX,
+                           nrepeat = 10, progressBar = FALSE,
+                           measure = 'MAE')
+plot(tune.spls.MAE, legend.position = 'topright')
+```
+
+<!-- The Q2.total can be used to tune the number of components using the perf() function, see [2]. The rule of thumbs is that a PLS component should be included in the model if its value is greater than or equal to 0.0975. Therefore, the optimal number of component to choose is -->
+<!-- indicated once the Q2 is below the threshold of 0.0975 [5].  -->
+
+### Other sources
+
+Other examples are provided at the end of the manual of the `pls` function. Run `r example(pls)` to have a look  on them.
+
+Complements are also available on the mixOmics website <http://www.mixomics.org>, items **Methods** and **Case studies**.
+
+## FAQ
+
+* Can PLS handle missing values?
+
+    Yes! But only for the learning / training analysis. Prediction with `perf` or `tune` is not possible with missing values.
+
+* Can PLS deal with more than 2 data sets?
+
+    No! sPLS can only deal with 2 data sets, but be see `DIABLO` (chapter \@ref(diablo)) for multi-block analyses
+
+* What are the differences between sPLS and CCA?
+    + CCA maximises the correlation between components; PLS maximises the covariance
+    + Both methods give similar results if the components are scaled, but the underlying algorithms are different:
+        - CCA calculates all component at once, there is no deflation
+        - PLS has different deflation mode
+    + sparse PLS selects variables, CCA cannot perform variable selection
+  
+* Can I perform PLS with more variables than observations?
+
+    Yes, and sparse PLS is particularly useful to identify sets of variables that play a role in explaining the relationship between two data sets.
+
+* Can I perform PLS with 2 data sets that are highly unbalanced (thousands of variables in one data set and less than 10 in the other ?
+
+    Yes! Even if you performed sPLS to select variables in one data set (or both), you can still control the number of variables selected with `keepX`.
+

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>mixOmics vignette</title>
+  <meta name="description" content="Vignette for the R package mixOmics">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="mixOmics vignette" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Vignette for the R package mixOmics" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="mixOmics vignette" />
+  
+  <meta name="twitter:description" content="Vignette for the R package mixOmics" />
+  
+
+<meta name="author" content="Kim-Anh Le Cao &amp; Sebastien Dejean">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+
+<link rel="next" href="start.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#intro:datatypes"><i class="fa fa-check"></i><b>1.1</b> Input data</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#methods"><i class="fa fa-check"></i><b>1.2</b> Methods</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#intro:background"><i class="fa fa-check"></i><b>1.2.1</b> Some background knowledge</a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#intro:overview"><i class="fa fa-check"></i><b>1.2.2</b> Overview</a></li>
+<li class="chapter" data-level="1.2.3" data-path="intro.html"><a href="intro.html#intro:pubs"><i class="fa fa-check"></i><b>1.2.3</b> Key publications</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#outline-of-this-vignette"><i class="fa fa-check"></i><b>1.3</b> Outline of this Vignette</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#other-methods-not-covered-in-this-vignette"><i class="fa fa-check"></i><b>1.4</b> Other methods not covered in this vignette</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="start.html"><a href="start.html"><i class="fa fa-check"></i><b>2</b> Let’s get started</a><ul>
+<li class="chapter" data-level="2.1" data-path="start.html"><a href="start.html#installation"><i class="fa fa-check"></i><b>2.1</b> Installation</a></li>
+<li class="chapter" data-level="2.2" data-path="start.html"><a href="start.html#start:upload"><i class="fa fa-check"></i><b>2.2</b> Load the package</a></li>
+<li class="chapter" data-level="2.3" data-path="start.html"><a href="start.html#upload-data"><i class="fa fa-check"></i><b>2.3</b> Upload data</a></li>
+<li class="chapter" data-level="2.4" data-path="start.html"><a href="start.html#start:PCA"><i class="fa fa-check"></i><b>2.4</b> Quick start in <code>mixOmics</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3</b> Principal Component Analysis (PCA)</a><ul>
+<li class="chapter" data-level="3.1" data-path="pca.html"><a href="pca.html#biological-question"><i class="fa fa-check"></i><b>3.1</b> Biological question</a></li>
+<li class="chapter" data-level="3.2" data-path="pca.html"><a href="pca.html#the-liver.toxicity-study"><i class="fa fa-check"></i><b>3.2</b> The <code>liver.toxicity</code> study</a></li>
+<li class="chapter" data-level="3.3" data-path="pca.html"><a href="pca.html#principle-of-pca"><i class="fa fa-check"></i><b>3.3</b> Principle of PCA</a></li>
+<li class="chapter" data-level="3.4" data-path="pca.html"><a href="pca.html#load-the-data"><i class="fa fa-check"></i><b>3.4</b> Load the data</a></li>
+<li class="chapter" data-level="3.5" data-path="pca.html"><a href="pca.html#quick-start"><i class="fa fa-check"></i><b>3.5</b> Quick start</a></li>
+<li class="chapter" data-level="3.6" data-path="pca.html"><a href="pca.html#to-go-further"><i class="fa fa-check"></i><b>3.6</b> To go further</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="pca.html"><a href="pca.html#customize-plots"><i class="fa fa-check"></i><b>3.6.1</b> Customize plots</a></li>
+<li class="chapter" data-level="3.6.2" data-path="pca.html"><a href="pca.html#amount-of-variance-explained-and-choice-of-number-of-components"><i class="fa fa-check"></i><b>3.6.2</b> Amount of variance explained and choice of number of components</a></li>
+<li class="chapter" data-level="3.6.3" data-path="pca.html"><a href="pca.html#other-useful-plots"><i class="fa fa-check"></i><b>3.6.3</b> Other useful plots</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="pca.html"><a href="pca.html#sPCA"><i class="fa fa-check"></i><b>3.7</b> Variable selection with sparse PCA</a><ul>
+<li class="chapter" data-level="3.7.1" data-path="pca.html"><a href="pca.html#biological-question-1"><i class="fa fa-check"></i><b>3.7.1</b> Biological question</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="pca.html"><a href="pca.html#tuning-parameters"><i class="fa fa-check"></i><b>3.8</b> Tuning parameters</a></li>
+<li class="chapter" data-level="3.9" data-path="pca.html"><a href="pca.html#additional-resources"><i class="fa fa-check"></i><b>3.9</b> Additional resources</a></li>
+<li class="chapter" data-level="3.10" data-path="pca.html"><a href="pca.html#faq"><i class="fa fa-check"></i><b>3.10</b> FAQ</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="plsda.html"><a href="plsda.html"><i class="fa fa-check"></i><b>4</b> PLS - Discriminant Analysis (PLS-DA)</a><ul>
+<li class="chapter" data-level="4.1" data-path="plsda.html"><a href="plsda.html#biological-question-2"><i class="fa fa-check"></i><b>4.1</b> Biological question</a></li>
+<li class="chapter" data-level="4.2" data-path="plsda.html"><a href="plsda.html#the-srbct-study"><i class="fa fa-check"></i><b>4.2</b> The <code>srbct</code> study</a></li>
+<li class="chapter" data-level="4.3" data-path="plsda.html"><a href="plsda.html#principle-of-sparse-pls-da"><i class="fa fa-check"></i><b>4.3</b> Principle of sparse PLS-DA</a></li>
+<li class="chapter" data-level="4.4" data-path="plsda.html"><a href="plsda.html#inputs-and-outputs"><i class="fa fa-check"></i><b>4.4</b> Inputs and outputs</a></li>
+<li class="chapter" data-level="4.5" data-path="plsda.html"><a href="plsda.html#set-up-the-data"><i class="fa fa-check"></i><b>4.5</b> Set up the data</a></li>
+<li class="chapter" data-level="4.6" data-path="plsda.html"><a href="plsda.html#quick-start-1"><i class="fa fa-check"></i><b>4.6</b> Quick start</a></li>
+<li class="chapter" data-level="4.7" data-path="plsda.html"><a href="plsda.html#plsda-tgf"><i class="fa fa-check"></i><b>4.7</b> To go further</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="plsda.html"><a href="plsda.html#splsda:plotIndiv"><i class="fa fa-check"></i><b>4.7.1</b> Customize sample plots</a></li>
+<li class="chapter" data-level="4.7.2" data-path="plsda.html"><a href="plsda.html#customize-variable-plots"><i class="fa fa-check"></i><b>4.7.2</b> Customize variable plots</a></li>
+<li class="chapter" data-level="4.7.3" data-path="plsda.html"><a href="plsda.html#other-useful-plots-1"><i class="fa fa-check"></i><b>4.7.3</b> Other useful plots</a></li>
+<li class="chapter" data-level="4.7.4" data-path="plsda.html"><a href="plsda.html#variable-selection-outputs"><i class="fa fa-check"></i><b>4.7.4</b> Variable selection outputs</a></li>
+<li class="chapter" data-level="4.7.5" data-path="plsda.html"><a href="plsda.html#tuning:sPLSDA"><i class="fa fa-check"></i><b>4.7.5</b> Tuning parameters and numerical outputs</a></li>
+</ul></li>
+<li class="chapter" data-level="4.8" data-path="plsda.html"><a href="plsda.html#additional-resources-1"><i class="fa fa-check"></i><b>4.8</b> Additional resources</a></li>
+<li class="chapter" data-level="4.9" data-path="plsda.html"><a href="plsda.html#faq-1"><i class="fa fa-check"></i><b>4.9</b> FAQ</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="pls.html"><a href="pls.html"><i class="fa fa-check"></i><b>5</b> Projection to Latent Structure (PLS)</a><ul>
+<li class="chapter" data-level="5.1" data-path="pls.html"><a href="pls.html#biological-question-3"><i class="fa fa-check"></i><b>5.1</b> Biological question</a></li>
+<li class="chapter" data-level="5.2" data-path="pls.html"><a href="pls.html#the-nutrimouse-study"><i class="fa fa-check"></i><b>5.2</b> The <code>nutrimouse</code> study</a></li>
+<li class="chapter" data-level="5.3" data-path="pls.html"><a href="pls.html#principle-of-pls"><i class="fa fa-check"></i><b>5.3</b> Principle of PLS</a></li>
+<li class="chapter" data-level="5.4" data-path="pls.html"><a href="pls.html#principle-of-sparse-pls"><i class="fa fa-check"></i><b>5.4</b> Principle of sparse PLS</a></li>
+<li class="chapter" data-level="5.5" data-path="pls.html"><a href="pls.html#inputs-and-outputs-1"><i class="fa fa-check"></i><b>5.5</b> Inputs and outputs</a></li>
+<li class="chapter" data-level="5.6" data-path="pls.html"><a href="pls.html#set-up-the-data-1"><i class="fa fa-check"></i><b>5.6</b> Set up the data</a></li>
+<li class="chapter" data-level="5.7" data-path="pls.html"><a href="pls.html#quick-start-2"><i class="fa fa-check"></i><b>5.7</b> Quick start</a></li>
+<li class="chapter" data-level="5.8" data-path="pls.html"><a href="pls.html#pls-tgf"><i class="fa fa-check"></i><b>5.8</b> To go further</a><ul>
+<li class="chapter" data-level="5.8.1" data-path="pls.html"><a href="pls.html#pls:plotIndiv"><i class="fa fa-check"></i><b>5.8.1</b> Customize sample plots</a></li>
+<li class="chapter" data-level="5.8.2" data-path="pls.html"><a href="pls.html#pls:plotVar"><i class="fa fa-check"></i><b>5.8.2</b> Customize variable plots</a></li>
+<li class="chapter" data-level="5.8.3" data-path="pls.html"><a href="pls.html#other-useful-plots-for-data-integration"><i class="fa fa-check"></i><b>5.8.3</b> Other useful plots for data integration</a></li>
+<li class="chapter" data-level="5.8.4" data-path="pls.html"><a href="pls.html#variable-selection-outputs-1"><i class="fa fa-check"></i><b>5.8.4</b> Variable selection outputs</a></li>
+<li class="chapter" data-level="5.8.5" data-path="pls.html"><a href="pls.html#tuning:PLS"><i class="fa fa-check"></i><b>5.8.5</b> Tuning parameters and numerical outputs</a></li>
+<li class="chapter" data-level="5.8.6" data-path="pls.html"><a href="pls.html#PLS:details"><i class="fa fa-check"></i><b>5.8.6</b> PLS modes</a></li>
+</ul></li>
+<li class="chapter" data-level="5.9" data-path="pls.html"><a href="pls.html#additional-resources-2"><i class="fa fa-check"></i><b>5.9</b> Additional resources</a></li>
+<li class="chapter" data-level="5.10" data-path="pls.html"><a href="pls.html#faq-2"><i class="fa fa-check"></i><b>5.10</b> FAQ</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="diablo.html"><a href="diablo.html"><i class="fa fa-check"></i><b>6</b> Multi-block Discriminant Analysis with DIABLO</a><ul>
+<li class="chapter" data-level="6.1" data-path="diablo.html"><a href="diablo.html#biological-question-4"><i class="fa fa-check"></i><b>6.1</b> Biological question</a></li>
+<li class="chapter" data-level="6.2" data-path="diablo.html"><a href="diablo.html#the-breast.tcga-study"><i class="fa fa-check"></i><b>6.2</b> The <code>breast.TCGA</code> study</a></li>
+<li class="chapter" data-level="6.3" data-path="diablo.html"><a href="diablo.html#principle-of-diablo"><i class="fa fa-check"></i><b>6.3</b> Principle of DIABLO</a></li>
+<li class="chapter" data-level="6.4" data-path="diablo.html"><a href="diablo.html#inputs-and-outputs-2"><i class="fa fa-check"></i><b>6.4</b> Inputs and outputs</a></li>
+<li class="chapter" data-level="6.5" data-path="diablo.html"><a href="diablo.html#set-up-the-data-2"><i class="fa fa-check"></i><b>6.5</b> Set up the data</a></li>
+<li class="chapter" data-level="6.6" data-path="diablo.html"><a href="diablo.html#quick-start-3"><i class="fa fa-check"></i><b>6.6</b> Quick start</a></li>
+<li class="chapter" data-level="6.7" data-path="diablo.html"><a href="diablo.html#to-go-further-1"><i class="fa fa-check"></i><b>6.7</b> To go further</a><ul>
+<li class="chapter" data-level="6.7.1" data-path="diablo.html"><a href="diablo.html#diablo:plotIndiv"><i class="fa fa-check"></i><b>6.7.1</b> Customize sample plots</a></li>
+<li class="chapter" data-level="6.7.2" data-path="diablo.html"><a href="diablo.html#diablo:plotVar"><i class="fa fa-check"></i><b>6.7.2</b> Customize variable plots</a></li>
+<li class="chapter" data-level="6.7.3" data-path="diablo.html"><a href="diablo.html#other-useful-plots-for-data-integration-1"><i class="fa fa-check"></i><b>6.7.3</b> Other useful plots for data integration</a></li>
+</ul></li>
+<li class="chapter" data-level="6.8" data-path="diablo.html"><a href="diablo.html#numerical-outputs"><i class="fa fa-check"></i><b>6.8</b> Numerical outputs</a><ul>
+<li class="chapter" data-level="6.8.1" data-path="diablo.html"><a href="diablo.html#classification-performance"><i class="fa fa-check"></i><b>6.8.1</b> Classification performance</a></li>
+<li class="chapter" data-level="6.8.2" data-path="diablo.html"><a href="diablo.html#auc"><i class="fa fa-check"></i><b>6.8.2</b> AUC</a></li>
+<li class="chapter" data-level="6.8.3" data-path="diablo.html"><a href="diablo.html#tuning-parameters-1"><i class="fa fa-check"></i><b>6.8.3</b> Tuning parameters</a></li>
+</ul></li>
+<li class="chapter" data-level="6.9" data-path="diablo.html"><a href="diablo.html#additional-resources-3"><i class="fa fa-check"></i><b>6.9</b> Additional resources</a></li>
+<li class="chapter" data-level="6.10" data-path="diablo.html"><a href="diablo.html#faq-3"><i class="fa fa-check"></i><b>6.10</b> FAQ</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="session-information.html"><a href="session-information.html"><i class="fa fa-check"></i><b>7</b> Session Information</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">mixOmics vignette</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">mixOmics vignette</h1>
+<h4 class="author"><em>Kim-Anh Le Cao &amp; Sebastien Dejean</em></h4>
+</div>
+<div id="intro" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
+<p><code>mixOmics</code> is an R toolkit dedicated to the exploration and integration of biological data sets with a specific focus on variable selection. The package currently includes nineteen multivariate methodologies, mostly developed by the <code>mixOmics</code> team (see some of our references in <a href="intro.html#intro:pubs">1.2.3</a>). Originally, all methods were designed for omics data, however, their application is not limited to biological data only. Other applications where integration is required can be considered, but mostly for the case where the predictor variables are continuous (see also <a href="intro.html#intro:datatypes">1.1</a>). In <code>mixOmics</code>, a strong focus is given to graphical representation to better translate and understand the relationships between the different data types and visualize the correlation structure at both sample and variable levels.</p>
+<div id="intro:datatypes" class="section level2">
+<h2><span class="header-section-number">1.1</span> Input data</h2>
+<p>Note the data pre-processing requirements before analysing data with <code>mixOmics</code>:</p>
+<ul>
+<li><p><strong>Types of data</strong>. Different types of biological data can be explored and integrated with <code>mixOmics</code>. Our methods can handle molecular features measured on a continuous scale (e.g. microarray, mass spectrometry-based proteomics and metabolomics) or sequenced-based count data (RNA-seq, 16S, shotgun metagenomics) that become `continuous’ data after pre-processing and normalisation.</p></li>
+<li><p><strong>Normalisation</strong>. The package does not handle normalisation as it is platform specific and we cover a too wide variety of data! Prior to the analysis, we assume the data sets have been normalised using appropriate normalisation methods and pre-processed when applicable.</p></li>
+<li><p><strong>Prefiltering</strong>. While <code>mixOmics</code> methods can handle large data sets (several tens of thousands of predictors), we recommend pre-filtering the data to less than 10K predictor variables per data set, for example by using Median Absolute Deviation <span class="citation">(Teng et al. <a href="#ref-Ten16">2016</a>)</span> for RNA-seq data, by removing consistently low counts in microbiome data sets <span class="citation">(Lê Cao et al. <a href="#ref-Lec16">2016</a>)</span> or by removing near zero variance predictors. Such step aims to lessen the computational time during the parameter tuning process.</p></li>
+<li><p><strong>Data format</strong>. Our methods use matrix decomposition techniques. Therefore, the numeric data matrix or data frames have <span class="math inline">\(n\)</span> observations or samples in rows and <span class="math inline">\(p\)</span> predictors or variables (e.g. genes, proteins, OTUs) in columns.</p></li>
+<li><p><strong>Covariates</strong>. In the current version of <code>mixOmics</code>, covariates that may confound the analysis are not included in the methods. We recommend correcting for those covariates beforehand using appropriate univariate or multivariate methods for batch effect removal. Contact us for more details as we are currently working on this aspect.</p></li>
+</ul>
+</div>
+<div id="methods" class="section level2">
+<h2><span class="header-section-number">1.2</span> Methods</h2>
+<div id="intro:background" class="section level3">
+<h3><span class="header-section-number">1.2.1</span> Some background knowledge</h3>
+<p>We list here the main methodological or theoretical concepts you need to know to be able to efficiently apply <code>mixOmics</code>:</p>
+<ul>
+<li><p><strong>Individuals, observations or samples</strong>: the experimental units on which information are collected, e.g. patients, cell lines, cells, faecal samples …</p></li>
+<li><p><strong>Variables, predictors</strong>: read-out measured on each sample, e.g. gene (expression), protein or OTU (abundance), weight …</p></li>
+<li><p><strong>Variance</strong>: measures the spread of one variable. In our methods we estimate the variance of components rather that variable read-outs. A high variance indicates that the data points are very spread out from the mean, and from one another (scattered).</p></li>
+<li><p><strong>Covariance</strong>: measures the strength of the relationship between two variables, i.e whether they co-vary. A high covariance value indicates a strong relationship, e.g weight and height in individuals frequently vary roughly in the same way; roughly, the heaviest are the tallest. A covariance value has no lower or upper bound.</p></li>
+<li><p><strong>Correlation</strong>: a standardized version of the covariance that is bounded by -1 and 1.</p></li>
+<li><p><strong>Linear combination</strong>: variables are combined by multiplying each of of them by a coefficient and adding the results. A linear combination of height and weight could be 2 <span class="math inline">\(*\)</span> weight - 1.5 <span class="math inline">\(*\)</span> height with the coefficients 2 and -1.5 assigned with weight and height respectively.</p></li>
+<li><p><strong>Component</strong>: an artificial variable built from a linear combination of the observed variables in a given data set. Variable coefficients are optimally defined based on some statistical criterion. For example in Principal Component Analysis, the coefficients in the (principal) component is defined so as to maximise the variance of the component.</p></li>
+<li><p><strong>Loadings</strong>: variable coefficients used to define a component.</p></li>
+<li><p><strong>Sample plot</strong>: representation of the samples projected in a small space spanned (defined) by the components. Samples coordinates are determined by their components values, or scores.</p></li>
+<li><p><strong>Correlation circle plot</strong>: representation of the variables in a space spanned by the components. Each variable coordinate is defined as the correlation between the original variable value and each component. A correlation circle plot enables to visualise the correlation between variables - negative or positive correlation, defined by the cosine angle between the centre of the circle and each variable point) and the contribution of each variable to each component - defined by absolute value of the coordinate on each component. For this interpretation, data need to be centred and scaled (by default in most of our methods except PCA). For more details on this insightful graphic, see Figure 1 in <span class="citation">(González et al. <a href="#ref-Gon12">2012</a>)</span>.</p></li>
+<li><p><strong>Unsupervised analysis</strong>: the method does not take into account any known sample groups and the analysis is exploratory. Examples of unsupervised methods covered in this vignette are Principal Component Analysis (PCA, Chapter <a href="pca.html#pca">3</a>), Projection to Latent Structures (PLS, Chapter <a href="pls.html#pls">5</a>), and also Canonical Correlation Analysis (CCA, not covered here).</p></li>
+<li><p><strong>Supervised analysis</strong>: the method includes a vector indicating the class membership of each sample. The aim is to discriminate sample groups and perform sample class prediction. Examples of supervised methods covered in this vignette are PLS Discriminant Analysis (PLS-DA, Chapter <a href="plsda.html#plsda">4</a>), DIABLO (Chapter <a href="diablo.html#diablo">6</a>) and also MINT (not covered here <span class="citation">(F Rohart et al. <a href="#ref-Roh16">2017</a>)</span>).</p></li>
+</ul>
+</div>
+<div id="intro:overview" class="section level3">
+<h3><span class="header-section-number">1.2.2</span> Overview</h3>
+<p>Here is an overview of the most widely used methods in <code>mixOmics</code> that will be further detailed in this vignette, with the exception of rCCA and MINT. We depict them along with the type of data data set they can handle.</p>
+<!-- It can be displayed using the `overview` function.-->
+<p><img src="Figures/overview-1.png" width="50%" style="display: block; margin: auto;" /></p>
+<div class="figure" style="text-align: center"><span id="fig:methods"></span>
+<img src="XtraFigs/Methods.png" alt="List of methods in mixOmics, sparse indicates methods that perform variable selection" width="60%" />
+<p class="caption">
+Figure 1.1: List of methods in mixOmics, sparse indicates methods that perform variable selection
+</p>
+</div>
+<div class="figure" style="text-align: center"><span id="fig:cheatsheet"></span>
+<img src="XtraFigs/cheatsheet.png" alt="Main functions and parameters of each method" width="100%" />
+<p class="caption">
+Figure 1.2: Main functions and parameters of each method
+</p>
+</div>
+</div>
+<div id="intro:pubs" class="section level3">
+<h3><span class="header-section-number">1.2.3</span> Key publications</h3>
+<p>The methods implemented in <code>mixOmics</code> are described in detail in the following publications. A more extensive list can be found at this <a href="http://mixomics.org/a-propos/publications/">link</a>.</p>
+<ul>
+<li><p><strong>Overview and recent integrative methods</strong>: Rohart F., Gautier, B, Singh, A, Le Cao, K. A. mixOmics: an <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005752">R package for ’omics feature selection and multiple data integration</a>. <em>PLoS Comput Biol</em> 13(11): e1005752.</p></li>
+<li><p><strong>Graphical outputs for integrative methods</strong>: <span class="citation">(González et al. <a href="#ref-Gon12">2012</a>)</span> Gonzalez I., Le Cao K.-A., Davis, M.D. and Dejean S. (2012) <a href="https://biodatamining.biomedcentral.com/articles/10.1186/1756-0381-5-19">Insightful graphical outputs to explore relationships between two omics data sets</a>. <em>BioData Mining</em> 5:19.</p></li>
+<li><p><strong>DIABLO</strong>: Singh A, Gautier B, Shannon C, Vacher M, Rohart F, Tebbutt S, K-A. Le Cao. <a href="https://www.biorxiv.org/content/early/2018/03/20/067611">DIABLO - multi-omics data integration for biomarker discovery.</a></p></li>
+<li><p><strong>sparse PLS</strong>: Le Cao K.-A., Martin P.G.P, Robert-Granie C. and Besse, P. (2009) <a href="http://www.biomedcentral.com/1471-2105/10/34/">Sparse Canonical Methods for Biological Data Integration: application to a cross-platform study</a>. <em>BMC Bioinformatics</em>, 10:34.</p></li>
+<li><p><strong>sparse PLS-DA</strong>:Le Cao K.-A., Boitard S. and Besse P. (2011) <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-253">Sparse PLS Discriminant Analysis: biologically relevant feature selection and graphical displays for multiclass problems</a>. <em>BMC Bioinformatics</em>, 22:253.</p></li>
+<li><p><strong>Multilevel approach for repeated measurements</strong>: Liquet B, Le Cao K-A, Hocini H, Thiebaut R (2012). <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-13-325">A novel approach for biomarker selection and the integration of repeated measures experiments from two assays</a>. <em>BMC Bioinformatics</em>, 13:325</p></li>
+<li><p><strong>sPLS-DA for microbiome data</strong>: Le Cao K-A<span class="math inline">\(^*\)</span>, Costello ME <span class="math inline">\(^*\)</span>, Lakis VA , Bartolo F, Chua XY, Brazeilles R and Rondeau P. (2016) <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0160169">MixMC: Multivariate insights into Microbial Communities</a>.PLoS ONE 11(8): e0160169</p></li>
+</ul>
+</div>
+</div>
+<div id="outline-of-this-vignette" class="section level2">
+<h2><span class="header-section-number">1.3</span> Outline of this Vignette</h2>
+<ul>
+<li><strong>Chapter <a href="start.html#start">2</a></strong> details some practical aspects to get started</li>
+<li><strong>Chapter <a href="pca.html#pca">3</a></strong>: Principal Components Analysis (PCA)</li>
+<li><strong>Chapter <a href="plsda.html#plsda">4</a></strong>: Projection to Latent Structure - Discriminant Analysis (PLS-DA)</li>
+<li><strong>Chapter <a href="pls.html#pls">5</a></strong>: Projection to Latent Structures (PLS)</li>
+<li><strong>Chapter <a href="diablo.html#diablo">6</a></strong>: Integrative analysis for multiple data sets (DIABLO)</li>
+</ul>
+<p>Each of the methods chapter has the following outline:</p>
+<ol style="list-style-type: decimal">
+<li>Type of biological question to be answered</li>
+<li>Brief description of an illustrative data set</li>
+<li>Principle of the method</li>
+<li>Quick start of the method with the main functions and arguments</li>
+<li>To go further: customized plots, additional graphical outputs and tuning parameters</li>
+<li>FAQ</li>
+</ol>
+</div>
+<div id="other-methods-not-covered-in-this-vignette" class="section level2">
+<h2><span class="header-section-number">1.4</span> Other methods not covered in this vignette</h2>
+<p>Other methods not covered in this document are described on our website and the following references:</p>
+<ul>
+<li><p><a href="http://www.mixOmics.org">regularised Canonical Correlation Analysis</a>, see the <strong>Methods</strong> and <strong>Case study</strong> tabs, and <span class="citation">(González et al. <a href="#ref-Gon08">2008</a>)</span> that describes CCA for large data sets.</p></li>
+<li><p><a href="http://www.mixOmics.org/mixmc">Microbiome (16S, shotgun metagenomics) data analysis</a>, see also <span class="citation">(Lê Cao et al. <a href="#ref-Lec16">2016</a>)</span> and <a href="http://mixomics.org/mixkernel">kernel integration for microbiome data</a>. The latter is in collaboration with Drs J Mariette and Nathalie Villa-Vialaneix (INRA Toulouse, France), an example is provided for the Tara ocean metagenomics and environmental data, see also <span class="citation">(Mariette and Villa-Vialaneix <a href="#ref-Mar17">2017</a>)</span>.</p></li>
+<li><p><a href="http://mixomics.org/mixmint/">MINT</a> or P-integration to integrate independently generated transcriptomics data sets. An example in stem cells studies, see also <span class="citation">(F Rohart et al. <a href="#ref-Roh16">2017</a>)</span>.</p></li>
+</ul>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Ten16">
+<p>Teng, Mingxiang, Michael I Love, Carrie A Davis, Sarah Djebali, Alexander Dobin, Brenton R Graveley, Sheng Li, et al. 2016. “A Benchmark for Rna-Seq Quantification Pipelines.” <em>Genome Biology</em> 17 (1). BioMed Central: 74.</p>
+</div>
+<div id="ref-Lec16">
+<p>Lê Cao, Kim-Anh, Mary-Ellen Costello, Xin-Yi Chua, Rémi Brazeilles, and Pascale Rondeau. 2016. “MixMC: Multivariate Insights into Microbial Communities.” <em>PloS One</em> 11 (8). Public Library of Science: e0160169.</p>
+</div>
+<div id="ref-Gon12">
+<p>González, Ignacio, Kim-Anh Lê Cao, Melissa J Davis, Sébastien Déjean, and others. 2012. “Visualising Associations Between Paired ’Omics’ Data Sets.” <em>BioData Mining</em> 5 (1). BioMed Central Ltd: 19.</p>
+</div>
+<div id="ref-Roh16">
+<p>Rohart, F, N Matigian, A Eslami, Bougeard S, and K-A Lê Cao. 2017. “MINT: A Multivariate Integrative Method to Identify Reproducible Molecular Signatures Across Independent Experiments and Platforms.” <em>BMC Bioinformatics</em> 18 (1). BioMed Central: 128.</p>
+</div>
+<div id="ref-Gon08">
+<p>González, Ignacio, Sébastien Déjean, Pascal GP Martin, and Alain Baccini. 2008. “CCA: An R Package to Extend Canonical Correlation Analysis.” <em>Journal of Statistical Software</em> 23 (12). American Statistical Association: 1–14.</p>
+</div>
+<div id="ref-Mar17">
+<p>Mariette, Jérôme, and Nathalie Villa-Vialaneix. 2017. “Unsupervised Multiple Kernel Learning for Heterogeneous Data Integration.” <em>Bioinformatics</em> 34 (6). Oxford University Press: 1009–15.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="start.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/01-intro.Rmd",
+"text": "Edit"
+},
+"download": ["Vignette-mixOmics.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

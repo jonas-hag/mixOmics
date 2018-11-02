@@ -1,0 +1,5 @@
+"0","block.splsda = block.splsda(X = block.data, Y = y,
+ncomp = ncomp, keepX = list.keepX,  design = design)
+"
+"2","Design matrix has changed to include Y; each block will be linked to Y.
+"

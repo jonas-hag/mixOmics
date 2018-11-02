@@ -1,0 +1,13 @@
+--- 
+title: 'mixOmics vignette'
+author: 'Kim-Anh Le Cao & Sebastien Dejean'
+date: '\today'
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: ["mybib.bib"]
+biblio-style: apalike
+link-citations: true
+github-repo: rstudio/bookdown-demo
+description: "This is the vignette dedicated to the R package mixOmics."
+---

@@ -1,0 +1,91 @@
+% !Rnw root = mixOmics-material-oneday.Rnw
+
+
+
+\subsection*{Objective}
+During this workshop we will introduce fundamental concepts of multivariate dimention reduction, including the exploration and analysis of a single data set and the integrative analysis of multiple data sets. We will present statistical concepts such as covariance and correlation, multiple linear regression, classification and prediction, cross-validation, selection of diagnostic or prognostic markers, l$_1$ and l$_2$ penalties in a regression framework. \\
+Each methodology that will be presented will be applied on biological `omics studies that include transcriptomics, metabolomics, proteomics, metagenomics data sets using our \R{mixOmics} R package, alternating theory and application on the case studies.
+
+
+\subsection*{Requirements}
+We expect the trainees to have a good working knowledge in R (e.g. handling data frames and perform simple calculations). Attendees are requested to bring their \textbf{own laptop}. % and their \textbf{own data they wish to analyse} during the last third day of the training. \\
+
+
+To run the \R{R} scripts in this workshop, you \textit{may} need to install or update the \textit{latest} version of \textbf{R} available from the CRAN (currently > 3.4, \url{https://cran.r-project.org/}), followed by the update or installation of the \R{R} package \R{mixOmics} version 6.4.1 with one of the two following options: %See more details at \url{http://mixomics.org/2018/06/software-requirements-for-2018-mixomics-workshop/}. 
+
+Installation from bioconductor:
+<< eval = FALSE >>=
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+ BiocManager::install("mixOmics")
+@
+
+Alternatively, you can install the development version of the package from Github.
+<< eval = FALSE>>=
+BiocManager::install("mixOmicsTeam/mixOmics/")
+@
+ 
+\textbf{For apple mac users}, if you are unable to install the \texttt{mixOmics} imported library \R{rgl} (\textit{rgl.so} error), you will \textbf{first} need to install the XQuartz software \url{https://www.xquartz.org/}. In addition we strongly advise using the \textbf{RStudio software} \url{http://www.rstudio.com/}. 
+
+
+\subsection*{Versions of this workshop material}
+This is the 10th version of this course material. The previous versions were:
+\begin{enumerate}
+\itemsep0em 
+  \item One-day tutorial at the European Conference on Computational Biology 2014 (ECCB'14), Strasbourg, France, Sept 7 2014, 
+  \item Two-day workshop hosted by the National Institute for Agricultural Research and organised by the Bioinformatics Facility Genotoul, Toulouse, October 6-7 2014, 
+  \item Two-day workshop hosted and organised by the Statistical Consulting Centre, Department of Statistics, University of Auckland, New Zeland, 9-10 April 2015,
+  \item Two-day workshop, Translational Research Institute, Brisbane Australia, Aug 13-14 2015,
+  \item `French mixOmics workshop tour' taught at CIRAD Montpellier, Plateforme Biostatistique Genotoul, Institut Math\'ematiques de Toulouse and Plateforme Migale and INRA Jouy-en-Josas, Sept-Oct 2015, 
+  \item Three-day workshops with a `\textit{bring your own data}' option in 2016 and 2017
+  \item Two-day workshop in conjunction with the first Advanced mixOmics workshop, sponsored by Institut National Polytechnique Toulouse, and COST (European Cooperation in science and technology), INRA Toulouse, Oct and Nov 2017. 
+  \item One-day workshop at Westmead Children's Medical Research Institute, Sydney, Australia, April 13 2018. 
+  \item One-day workshop at the International Biometrics Conference, July 2018, and three-day workshop at the Univeristy of Melbourne, July 2018. 
+\end{enumerate}
+\noindent
+
+
+\subsection*{Permission for reuse}
+The course was written by Dr Kim-Anh L\^e Cao, with suggestions and constructive feedback from the mixOmics team and our attendees. Formal permission must be sought to redistribute, or reuse part of any material provided during this workshop. Acknowledgements will also be required if any of this work is quoted or cited. 
+
+
+
+\subsection*{Acknowledgements}
+The \R{mixOmics} core team (Drs Kim-Anh L\^e Cao, Florian Rohart, Ignacio Gonz\'alez and S\'ebastien D\'ejean) would like to thank theirformer students,  workshop participants and the key \R{mixOmics} developers \textbf{Dr Xin Yi Chua} (Queensland Facility for Advanced Bioinformatics, University of Queensland), \textbf{Mr Beno\^it Gautier} (The University of Queensland Diamantina Institute, Translational Research Institute), \textbf{Mr Francois Bartolo} (Institut de Math\'ematiques de Toulouse, Universit\'e Paul Sabatier) . They are also indebted to numerous \R{mixOmics} users who continuously help improving the package. \\
+\noindent
+We wish to acknowledge the funding bodies who made the mixOmics project possible: the National Health and Medical Research Council Career Development Fellowship (NHMRC, GNT1087\-415, KALC), the NHMRC Program grant (NHMRC, GNT1058993, BG) and Australian Research Council (ARC, DP130100777, FR), the Australian Cancer Research Foundation (ACRF) for the Diamantina Individualised Oncology Care Centre at The University of Queensland Diamantina (KALC, FR) and the Agence National de Recherche (ANR, SYNTHACS, FB).
+
+%\newpage\thispagestyle{empty}
+
+\section*{Your teacher}
+\subsection*{Dr Kim-Anh L\^e Cao (core member of \texttt{mixOmics})}
+
+\begin{wrapfigure}{L}{0.15\textwidth}
+\centering
+\includegraphics[width=0.15\textwidth]{Figures/CV/180283_39_crop_small}
+\end{wrapfigure}
+
+Dr Kim-Anh L\^{e} Cao (University of Melbourne, Australia) was awarded her PhD in 2008 at Université de Toulouse, France. She then moved to Australia as a postdoctoral fellow at the University of Queensland, Brisbane.  Since the beginning of her PhD Kim-Anh has initiated a wide range of valuable collaborative and research opportunities in both statistics and molecular biology. Her main research focus is on variable selection for biological data (`omics' data) coming from different functional levels by the means of multivariate dimension reduction approaches. Since 2009, her team has been working on developing a statistical software dedicated to the integrative analysis of `omics' data, to help researchers make sense of biological big data. Kim-Anh is a senior lecturer at the University of Melbourne (Melbourne Integrative Genomics, School of Mathematics and Statistics), and regularly runs statistical training workshops and short series seminars as well as mixOmics multi-day workshops. More details on Kim-Anh current research and collaborative projects: \url{http://lecao-lab.science.unimelb.edu.au/}.
+
+During her spare time, Kim-Anh is a keen rock climber and bushwalker. Her favourite or common travel destinations are France and South Africa.
+
+% \subsection*{Yiwen Wang (Eva) (tutor)}
+% 
+% Nicholas Matigian is a data analyst for the The University of Queensland Diamantina Institute Biostatistics facility at the Translational Research Institute.  He obtained a Bachelor of Applied Science (Biotechnology and Molecular Biology) with Honors from the Queensland University of Technology. His research has focused on development alternate non-brain, easily accessible cellular models for various neurological disorders.  He has experience in both `wet lab' generating, and `dry lab' analysing high-throughput data.  
+
+
+% \subsection*{S\'ebastien D\'ejean (core member of \texttt{mixOmics})}
+% \begin{wrapfigure}{L}{0.15\textwidth}
+% \centering
+% \includegraphics[width=0.15\textwidth]{Figures/CV/SebastienDejean}
+% \end{wrapfigure}
+% 
+% Dr S\'ebastien DÃ©jean was awarded his PhD in Applied Statistics in 2002 at Universit\'{e} de Toulouse, France after spending 4 years in a Biometry lab at INRA (French National Institute for Agronomic Research). Since then he has been working at the Toulouse Mathematics Institute (Universit\'{e} de Toulouse, France) as a research engineer. S\'ebastien likes to interact closely with scientists working in different research areas ranging from high-throughput biology, chemistry to information retrieval. He is an expert in statistical data analysis and he contributes to the development of several \texttt{R} packages including \texttt{mixOmics}.\\
+% 
+% S\'ebastien is deeply committed into teaching, including training statistical/software workshops for researchers and scientific and administrative staff. He can illustrate Principal Component Analysis with a fishing rod, a pizza-box and a soccer ball; do you know why?\\
+% 
+% Outside work, S\'ebastien runs! From 10km (best performance 36'31 as of June 2018) to marathons (3h26', to be improved). He runs with the green and yellow team jersey of the Athletics Coaching Club Ramonville. S\'ebastien was qualified for the the 10km French championship in his year category in Aubagne in 2017. He'll start running marathons again in October this year!
+% 
+% 
+
+

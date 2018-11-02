@@ -1,0 +1,199 @@
+\documentclass[11pt,a4paper]{report}
+\usepackage{sty-files/KAstyle}
+
+\usepackage{fancyhdr}
+\usepackage[noae,nogin]{Sweave}
+\usepackage{natbib}           % bibliography
+\usepackage{amsfonts,amsmath, amsthm} 
+\usepackage{amsthm}           % to define new theorems
+\usepackage{mdframed}         % for framed
+\usepackage{float} % to put figures exactly Here
+\usepackage[multidot]{grffile}  % to deal with figure names with 2 dots
+\usepackage{multirow}
+\usepackage{wrapfig}  % wrapping figures
+
+% ----define new commands
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+
+% a blankpage
+\newcommand{\blankpage}{
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\newpage
+}
+
+
+% ---- define new theorems
+%\newtheorem{algo}{Pseudo algorithm}
+
+  
+% this is to define a new algo
+  \newtheorem{mdtheorem3}{Pseudo algorithm}
+  \newenvironment{algo}
+{\begin{center}
+    \begin{tabular}{|p{0.9\textwidth}|}
+    \hline\\
+    }
+    { 
+    \\ \hline
+    \end{tabular} 
+    \end{center}
+    }
+
+
+
+% ---Redefine Sweave Style -----------------
+\SweaveOpts{concordance=FALSE, keep.source=TRUE}
+\setkeys{Gin}{width=0.8\textwidth} 
+\SweaveOpts{prefix.string=Figures/fig}
+\SweaveOpts{width=8} %,height=4}
+
+% Shorten the output lines that R produces
+<<echo=FALSE>>=
+  options(width=65)
+@
+
+
+%1. Schunk
+\renewenvironment{Schunk}
+  {\vspace{2pt}\small}
+  {\vspace{7pt}}
+
+%2. Sinput
+\DefineVerbatimEnvironment{Sinput}{Verbatim} {
+  xleftmargin=10pt,
+  fontshape=n, 
+  frame=leftline, 
+  framerule=2.5pt, 
+  gobble=0, 
+  framesep=8pt, 
+  rulecolor=\color{bl2},
+  formatcom=\color{bl1},
+  fontsize=\footnotesize
+ }
+
+%3. Soutput
+\DefineVerbatimEnvironment{Soutput}{Verbatim} {
+  xleftmargin=10pt,
+  fontshape=sl, 
+  frame=leftline, 
+  framerule=2.5pt, 
+  gobble=0, 
+  framesep=8pt,
+  rulecolor=\color{gray},
+  formatcom=\color{darkgray},
+  fontsize=\footnotesize
+}
+
+% ------- colored background on title page ----
+\usepackage{eso-pic}
+\newcommand\BackgroundPic{%
+\put(0,0){%
+\parbox[b][\paperheight]{\paperwidth}{%
+\vfill
+%\vspace*{-4cm}
+\centering
+\includegraphics[width=1\paperwidth,height=1\paperheight, keepaspectratio]{Figures/Title/coverOneDaygris-IBC2018} \\      %  !!! cover title page
+%\includegraphics[height=0.08\paperwidth, keepaspectratio]{Figures/Title/UOM}  \hspace{1cm} \includegraphics[height=0.08\paperwidth, keepaspectratio]{Figures/Title/cmri}   
+\vfill
+}}}
+
+
+% ============================ start document ===========================
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+% no page numbering:
+\pagenumbering{gobble}% Remove page numbers (and reset to 1)
+
+
+% ---------------------------------------
+% ---------- Title -----------
+% ---------------------------------------
+
+\AddToShipoutPicture*{\BackgroundPic}
+\newpage\thispagestyle{empty}
+~
+\blankpage \thispagestyle{empty}
+
+
+% -----------------------------------------------
+%       Chapter: Foreword and acknowledgements
+% ----------------------------------------------
+\chapter*{Foreword}
+\SweaveInput{Foreword-short.Rnw}
+
+% ---------------------------------------
+% ---------- Table of content -----------
+% ---------------------------------------
+\tableofcontents
+
+\newpage\thispagestyle{empty}
+~
+\newpage\thispagestyle{empty}
+
+\setcounter{page}{1}
+
+% -------------------
+%\setcounter{page}{1}
+\clearpage
+\pagenumbering{arabic}% Arabic page numbers (and reset to 1)
+% -------------------
+
+
+% % -----------------------------------------------
+% %       Chapter: introduction
+% % ----------------------------------------------
+%\part{Introduction}\label{Intro}
+\chapter{Introduction}\label{Intro}
+\SweaveInput{Intro-short.Rnw}
+
+
+% % % -----------------------------------------------
+% % %       Chapter: methods
+% % % ----------------------------------------------
+
+% % %PCA
+% \chapter{Principal Component Analysis}\label{method:PCA}
+% \SweaveInput{meth-PCA.Rnw}
+% 
+% 
+% \chapter{Case study with PCA on Multidrug data set}\label{study:MultidrugPCA}
+% \SweaveInput{case-study-Multidrug.Rnw}
+% 
+% %PLS-DA
+% \chapter{Discriminant Analysis}\label{method:PLSDA}
+% \SweaveInput{meth-PLSDA.Rnw}
+% 
+% \chapter{Case study with sPLS-DA on SRBCT data set}\label{study:SRBCT}
+% \SweaveInput{case-study-SRBCT.Rnw}
+% 
+% \chapter{Case study with PCA and sPLS-DA for 16S microbiome data (optional)}\label{study:mixMC}
+% \SweaveInput{case-study-microbiome.Rnw}
+% 
+% \chapter{Graphical outputs for integrative analyses}\label{graph:outputs}
+% \SweaveInput{meth-graphics.Rnw}
+% 
+% \chapter{$N-$ integration and example}\label{study:multiblock}
+% \SweaveInput{case-study-multiblock.Rnw}
+% 
+% 
+
+%% Xtra not shown
+
+% % \chapter{Multivariate analyses on Arabidopsis data, your turn!}\label{study:arabi}
+% % \SweaveInput{study-arabidopsis-short.Rnw}
+
+% % % % -----------------------------------------------
+% % % %       Appendix
+% % % % ----------------------------------------------
+\appendix
+\SweaveInput{Appendix-short.Rnw}
+
+% ------------------ references -----------------
+\bibliographystyle{natbib}
+\bibliography{mybib}
+
+
+\end{document}

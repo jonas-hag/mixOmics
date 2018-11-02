@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>mixOmics vignette</title>
+  <meta name="description" content="Vignette for the R package mixOmics">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="mixOmics vignette" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Vignette for the R package mixOmics" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="mixOmics vignette" />
+  
+  <meta name="twitter:description" content="Vignette for the R package mixOmics" />
+  
+
+<meta name="author" content="Kim-Anh Le Cao &amp; Sebastien Dejean">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="intro.html">
+<link rel="next" href="pca.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#intro:datatypes"><i class="fa fa-check"></i><b>1.1</b> Input data</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#methods"><i class="fa fa-check"></i><b>1.2</b> Methods</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#intro:background"><i class="fa fa-check"></i><b>1.2.1</b> Some background knowledge</a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#intro:overview"><i class="fa fa-check"></i><b>1.2.2</b> Overview</a></li>
+<li class="chapter" data-level="1.2.3" data-path="intro.html"><a href="intro.html#intro:pubs"><i class="fa fa-check"></i><b>1.2.3</b> Key publications</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#outline-of-this-vignette"><i class="fa fa-check"></i><b>1.3</b> Outline of this Vignette</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#other-methods-not-covered-in-this-vignette"><i class="fa fa-check"></i><b>1.4</b> Other methods not covered in this vignette</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="start.html"><a href="start.html"><i class="fa fa-check"></i><b>2</b> Let’s get started</a><ul>
+<li class="chapter" data-level="2.1" data-path="start.html"><a href="start.html#installation"><i class="fa fa-check"></i><b>2.1</b> Installation</a></li>
+<li class="chapter" data-level="2.2" data-path="start.html"><a href="start.html#start:upload"><i class="fa fa-check"></i><b>2.2</b> Load the package</a></li>
+<li class="chapter" data-level="2.3" data-path="start.html"><a href="start.html#upload-data"><i class="fa fa-check"></i><b>2.3</b> Upload data</a></li>
+<li class="chapter" data-level="2.4" data-path="start.html"><a href="start.html#start:PCA"><i class="fa fa-check"></i><b>2.4</b> Quick start in <code>mixOmics</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>3</b> Principal Component Analysis (PCA)</a><ul>
+<li class="chapter" data-level="3.1" data-path="pca.html"><a href="pca.html#biological-question"><i class="fa fa-check"></i><b>3.1</b> Biological question</a></li>
+<li class="chapter" data-level="3.2" data-path="pca.html"><a href="pca.html#the-liver.toxicity-study"><i class="fa fa-check"></i><b>3.2</b> The <code>liver.toxicity</code> study</a></li>
+<li class="chapter" data-level="3.3" data-path="pca.html"><a href="pca.html#principle-of-pca"><i class="fa fa-check"></i><b>3.3</b> Principle of PCA</a></li>
+<li class="chapter" data-level="3.4" data-path="pca.html"><a href="pca.html#load-the-data"><i class="fa fa-check"></i><b>3.4</b> Load the data</a></li>
+<li class="chapter" data-level="3.5" data-path="pca.html"><a href="pca.html#quick-start"><i class="fa fa-check"></i><b>3.5</b> Quick start</a></li>
+<li class="chapter" data-level="3.6" data-path="pca.html"><a href="pca.html#to-go-further"><i class="fa fa-check"></i><b>3.6</b> To go further</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="pca.html"><a href="pca.html#customize-plots"><i class="fa fa-check"></i><b>3.6.1</b> Customize plots</a></li>
+<li class="chapter" data-level="3.6.2" data-path="pca.html"><a href="pca.html#amount-of-variance-explained-and-choice-of-number-of-components"><i class="fa fa-check"></i><b>3.6.2</b> Amount of variance explained and choice of number of components</a></li>
+<li class="chapter" data-level="3.6.3" data-path="pca.html"><a href="pca.html#other-useful-plots"><i class="fa fa-check"></i><b>3.6.3</b> Other useful plots</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="pca.html"><a href="pca.html#sPCA"><i class="fa fa-check"></i><b>3.7</b> Variable selection with sparse PCA</a><ul>
+<li class="chapter" data-level="3.7.1" data-path="pca.html"><a href="pca.html#biological-question-1"><i class="fa fa-check"></i><b>3.7.1</b> Biological question</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="pca.html"><a href="pca.html#tuning-parameters"><i class="fa fa-check"></i><b>3.8</b> Tuning parameters</a></li>
+<li class="chapter" data-level="3.9" data-path="pca.html"><a href="pca.html#additional-resources"><i class="fa fa-check"></i><b>3.9</b> Additional resources</a></li>
+<li class="chapter" data-level="3.10" data-path="pca.html"><a href="pca.html#faq"><i class="fa fa-check"></i><b>3.10</b> FAQ</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="plsda.html"><a href="plsda.html"><i class="fa fa-check"></i><b>4</b> PLS - Discriminant Analysis (PLS-DA)</a><ul>
+<li class="chapter" data-level="4.1" data-path="plsda.html"><a href="plsda.html#biological-question-2"><i class="fa fa-check"></i><b>4.1</b> Biological question</a></li>
+<li class="chapter" data-level="4.2" data-path="plsda.html"><a href="plsda.html#the-srbct-study"><i class="fa fa-check"></i><b>4.2</b> The <code>srbct</code> study</a></li>
+<li class="chapter" data-level="4.3" data-path="plsda.html"><a href="plsda.html#principle-of-sparse-pls-da"><i class="fa fa-check"></i><b>4.3</b> Principle of sparse PLS-DA</a></li>
+<li class="chapter" data-level="4.4" data-path="plsda.html"><a href="plsda.html#inputs-and-outputs"><i class="fa fa-check"></i><b>4.4</b> Inputs and outputs</a></li>
+<li class="chapter" data-level="4.5" data-path="plsda.html"><a href="plsda.html#set-up-the-data"><i class="fa fa-check"></i><b>4.5</b> Set up the data</a></li>
+<li class="chapter" data-level="4.6" data-path="plsda.html"><a href="plsda.html#quick-start-1"><i class="fa fa-check"></i><b>4.6</b> Quick start</a></li>
+<li class="chapter" data-level="4.7" data-path="plsda.html"><a href="plsda.html#plsda-tgf"><i class="fa fa-check"></i><b>4.7</b> To go further</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="plsda.html"><a href="plsda.html#splsda:plotIndiv"><i class="fa fa-check"></i><b>4.7.1</b> Customize sample plots</a></li>
+<li class="chapter" data-level="4.7.2" data-path="plsda.html"><a href="plsda.html#customize-variable-plots"><i class="fa fa-check"></i><b>4.7.2</b> Customize variable plots</a></li>
+<li class="chapter" data-level="4.7.3" data-path="plsda.html"><a href="plsda.html#other-useful-plots-1"><i class="fa fa-check"></i><b>4.7.3</b> Other useful plots</a></li>
+<li class="chapter" data-level="4.7.4" data-path="plsda.html"><a href="plsda.html#variable-selection-outputs"><i class="fa fa-check"></i><b>4.7.4</b> Variable selection outputs</a></li>
+<li class="chapter" data-level="4.7.5" data-path="plsda.html"><a href="plsda.html#tuning:sPLSDA"><i class="fa fa-check"></i><b>4.7.5</b> Tuning parameters and numerical outputs</a></li>
+</ul></li>
+<li class="chapter" data-level="4.8" data-path="plsda.html"><a href="plsda.html#additional-resources-1"><i class="fa fa-check"></i><b>4.8</b> Additional resources</a></li>
+<li class="chapter" data-level="4.9" data-path="plsda.html"><a href="plsda.html#faq-1"><i class="fa fa-check"></i><b>4.9</b> FAQ</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="pls.html"><a href="pls.html"><i class="fa fa-check"></i><b>5</b> Projection to Latent Structure (PLS)</a><ul>
+<li class="chapter" data-level="5.1" data-path="pls.html"><a href="pls.html#biological-question-3"><i class="fa fa-check"></i><b>5.1</b> Biological question</a></li>
+<li class="chapter" data-level="5.2" data-path="pls.html"><a href="pls.html#the-nutrimouse-study"><i class="fa fa-check"></i><b>5.2</b> The <code>nutrimouse</code> study</a></li>
+<li class="chapter" data-level="5.3" data-path="pls.html"><a href="pls.html#principle-of-pls"><i class="fa fa-check"></i><b>5.3</b> Principle of PLS</a></li>
+<li class="chapter" data-level="5.4" data-path="pls.html"><a href="pls.html#principle-of-sparse-pls"><i class="fa fa-check"></i><b>5.4</b> Principle of sparse PLS</a></li>
+<li class="chapter" data-level="5.5" data-path="pls.html"><a href="pls.html#inputs-and-outputs-1"><i class="fa fa-check"></i><b>5.5</b> Inputs and outputs</a></li>
+<li class="chapter" data-level="5.6" data-path="pls.html"><a href="pls.html#set-up-the-data-1"><i class="fa fa-check"></i><b>5.6</b> Set up the data</a></li>
+<li class="chapter" data-level="5.7" data-path="pls.html"><a href="pls.html#quick-start-2"><i class="fa fa-check"></i><b>5.7</b> Quick start</a></li>
+<li class="chapter" data-level="5.8" data-path="pls.html"><a href="pls.html#pls-tgf"><i class="fa fa-check"></i><b>5.8</b> To go further</a><ul>
+<li class="chapter" data-level="5.8.1" data-path="pls.html"><a href="pls.html#pls:plotIndiv"><i class="fa fa-check"></i><b>5.8.1</b> Customize sample plots</a></li>
+<li class="chapter" data-level="5.8.2" data-path="pls.html"><a href="pls.html#pls:plotVar"><i class="fa fa-check"></i><b>5.8.2</b> Customize variable plots</a></li>
+<li class="chapter" data-level="5.8.3" data-path="pls.html"><a href="pls.html#other-useful-plots-for-data-integration"><i class="fa fa-check"></i><b>5.8.3</b> Other useful plots for data integration</a></li>
+<li class="chapter" data-level="5.8.4" data-path="pls.html"><a href="pls.html#variable-selection-outputs-1"><i class="fa fa-check"></i><b>5.8.4</b> Variable selection outputs</a></li>
+<li class="chapter" data-level="5.8.5" data-path="pls.html"><a href="pls.html#tuning:PLS"><i class="fa fa-check"></i><b>5.8.5</b> Tuning parameters and numerical outputs</a></li>
+<li class="chapter" data-level="5.8.6" data-path="pls.html"><a href="pls.html#PLS:details"><i class="fa fa-check"></i><b>5.8.6</b> PLS modes</a></li>
+</ul></li>
+<li class="chapter" data-level="5.9" data-path="pls.html"><a href="pls.html#additional-resources-2"><i class="fa fa-check"></i><b>5.9</b> Additional resources</a></li>
+<li class="chapter" data-level="5.10" data-path="pls.html"><a href="pls.html#faq-2"><i class="fa fa-check"></i><b>5.10</b> FAQ</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="diablo.html"><a href="diablo.html"><i class="fa fa-check"></i><b>6</b> Multi-block Discriminant Analysis with DIABLO</a><ul>
+<li class="chapter" data-level="6.1" data-path="diablo.html"><a href="diablo.html#biological-question-4"><i class="fa fa-check"></i><b>6.1</b> Biological question</a></li>
+<li class="chapter" data-level="6.2" data-path="diablo.html"><a href="diablo.html#the-breast.tcga-study"><i class="fa fa-check"></i><b>6.2</b> The <code>breast.TCGA</code> study</a></li>
+<li class="chapter" data-level="6.3" data-path="diablo.html"><a href="diablo.html#principle-of-diablo"><i class="fa fa-check"></i><b>6.3</b> Principle of DIABLO</a></li>
+<li class="chapter" data-level="6.4" data-path="diablo.html"><a href="diablo.html#inputs-and-outputs-2"><i class="fa fa-check"></i><b>6.4</b> Inputs and outputs</a></li>
+<li class="chapter" data-level="6.5" data-path="diablo.html"><a href="diablo.html#set-up-the-data-2"><i class="fa fa-check"></i><b>6.5</b> Set up the data</a></li>
+<li class="chapter" data-level="6.6" data-path="diablo.html"><a href="diablo.html#quick-start-3"><i class="fa fa-check"></i><b>6.6</b> Quick start</a></li>
+<li class="chapter" data-level="6.7" data-path="diablo.html"><a href="diablo.html#to-go-further-1"><i class="fa fa-check"></i><b>6.7</b> To go further</a><ul>
+<li class="chapter" data-level="6.7.1" data-path="diablo.html"><a href="diablo.html#diablo:plotIndiv"><i class="fa fa-check"></i><b>6.7.1</b> Customize sample plots</a></li>
+<li class="chapter" data-level="6.7.2" data-path="diablo.html"><a href="diablo.html#diablo:plotVar"><i class="fa fa-check"></i><b>6.7.2</b> Customize variable plots</a></li>
+<li class="chapter" data-level="6.7.3" data-path="diablo.html"><a href="diablo.html#other-useful-plots-for-data-integration-1"><i class="fa fa-check"></i><b>6.7.3</b> Other useful plots for data integration</a></li>
+</ul></li>
+<li class="chapter" data-level="6.8" data-path="diablo.html"><a href="diablo.html#numerical-outputs"><i class="fa fa-check"></i><b>6.8</b> Numerical outputs</a><ul>
+<li class="chapter" data-level="6.8.1" data-path="diablo.html"><a href="diablo.html#classification-performance"><i class="fa fa-check"></i><b>6.8.1</b> Classification performance</a></li>
+<li class="chapter" data-level="6.8.2" data-path="diablo.html"><a href="diablo.html#auc"><i class="fa fa-check"></i><b>6.8.2</b> AUC</a></li>
+<li class="chapter" data-level="6.8.3" data-path="diablo.html"><a href="diablo.html#tuning-parameters-1"><i class="fa fa-check"></i><b>6.8.3</b> Tuning parameters</a></li>
+</ul></li>
+<li class="chapter" data-level="6.9" data-path="diablo.html"><a href="diablo.html#additional-resources-3"><i class="fa fa-check"></i><b>6.9</b> Additional resources</a></li>
+<li class="chapter" data-level="6.10" data-path="diablo.html"><a href="diablo.html#faq-3"><i class="fa fa-check"></i><b>6.10</b> FAQ</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="session-information.html"><a href="session-information.html"><i class="fa fa-check"></i><b>7</b> Session Information</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">mixOmics vignette</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="start" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> Let’s get started</h1>
+<div id="installation" class="section level2">
+<h2><span class="header-section-number">2.1</span> Installation</h2>
+<p>First, install the latest  version:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># in bioconductor:</span>
+<span class="co"># try http:// if https:// URLs are not supported</span>
+<span class="kw">source</span>(<span class="st">&quot;https://bioconductor.org/biocLite.R&quot;</span>)
+<span class="kw">biocLite</span>(<span class="st">&#39;mixOmics&#39;</span>)</code></pre></div>
+<p>The <code>mixOmics</code> package should directly import the following packages: <code>igraph, rgl, ellipse, corpcor, RColorBrewer, plyr, parallel, dplyr, tidyr, reshape2, methods, matrixStats, rARPACK, gridExtra</code>.</p>
+</div>
+<div id="start:upload" class="section level2">
+<h2><span class="header-section-number">2.2</span> Load the package</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mixOmics)</code></pre></div>
+<p>Check that there is no error when loading the package. For <em>apple mac users</em>, if you are unable to install the imported library <code>rgl</code>, you will need to install the <a href="https://www.xquartz.org">XQuartz software</a> first.</p>
+</div>
+<div id="upload-data" class="section level2">
+<h2><span class="header-section-number">2.3</span> Upload data</h2>
+<p>The examples we give in this vignette use data that are already part of the package. To upload your own data, check first that your working directory is set, then read your data from a <code>.txt</code> or <code>.csv</code> format, either by using <strong>File &gt; Import Dataset</strong> in RStudio or via one of these command lines:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># from csv file</span>
+data &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;your_data.csv&quot;</span>, <span class="dt">row.names =</span> <span class="dv">1</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)
+
+<span class="co"># from txt file</span>
+data &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;your_data.txt&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>For more details about the arguments used to modify those functions, type <code>?read.csv</code> or <code>?read.table</code> in the R console.</p>
+</div>
+<div id="start:PCA" class="section level2">
+<h2><span class="header-section-number">2.4</span> Quick start in <code>mixOmics</code></h2>
+<p>Each analysis should follow this workflow:</p>
+<ol style="list-style-type: decimal">
+<li>Run the method</li>
+<li>Graphical representation of the samples</li>
+<li>Graphical representation of the variables</li>
+</ol>
+<p>Then use your critical thinking and additional functions and visual tools to make sense of your data! (some of which are listed in <a href="intro.html#intro:overview">1.2.2</a>) and will be described in the next Chapters.</p>
+<p>For instance, for Principal Components Analysis, we first load the data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(nutrimouse)
+X &lt;-<span class="st"> </span>nutrimouse<span class="op">$</span>gene</code></pre></div>
+<p>Then use the following steps:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MyResult.pca &lt;-<span class="st"> </span><span class="kw">pca</span>(X)  <span class="co"># 1 Run the method</span>
+<span class="kw">plotIndiv</span>(MyResult.pca) <span class="co"># 2 Plot the samples</span></code></pre></div>
+<p><img src="Figures/unnamed-chunk-5-1.png" width="50%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotVar</span>(MyResult.pca)   <span class="co"># 3 Plot the variables</span></code></pre></div>
+<p><img src="Figures/unnamed-chunk-5-2.png" width="50%" style="display: block; margin: auto;" /></p>
+<p>This is only a first quick-start, there will be many avenues you can take to deepen your exploratory and integrative analyses. The package proposes several methods to perform variable, or feature selection to identify the relevant information from rather large omics data sets. The sparse methods are listed in the Table in <a href="intro.html#intro:overview">1.2.2</a>.</p>
+<p>Following our example here, sparse PCA can be applied to select the top 5 variables contributing to each of the two components in PCA. The user specifies the number of variables to selected on each component, for example here 5 variables are selected on each of the first two components (<code>keepX=c(5,5)</code>):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MyResult.spca &lt;-<span class="st"> </span><span class="kw">spca</span>(X, <span class="dt">keepX=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="co"># 1 Run the method</span>
+<span class="kw">plotIndiv</span>(MyResult.spca)               <span class="co"># 2 Plot the samples</span></code></pre></div>
+<p><img src="Figures/unnamed-chunk-6-1.png" width="50%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotVar</span>(MyResult.spca)                 <span class="co"># 3 Plot the variables</span></code></pre></div>
+<p><img src="Figures/unnamed-chunk-6-2.png" width="50%" style="display: block; margin: auto;" /></p>
+<p>You can see know that we have considerably reduced the number of genes in the <code>plotVar</code> correlation circle plot.</p>
+<p>Do not stop here! We are not done yet. You can enhance your analyses with the following:</p>
+<ul>
+<li><p>Have a look at our manual and each of the functions and their examples, e.g. <code>?pca</code>, <code>?plotIndiv</code>, <code>?sPCA</code>, …</p></li>
+<li><p>Run the examples from the help file using the <code>example</code> function: <code>example(pca)</code>, <code>example(plotIndiv)</code>, …</p></li>
+<li><p>Have a look at out <a href="http://www.mixomics.org">website</a> that features many tutorials and case studies,</p></li>
+<li><p>Keep reading this vignette, this is <em>just the beginning!</em></p></li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="pca.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/02-get-started.Rmd",
+"text": "Edit"
+},
+"download": ["Vignette-mixOmics.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1534215934538.000,
+    "dirty" : false,
+    "encoding" : "ISO-8859-1",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "3C00BBED",
+    "lastKnownWriteTime" : 1534218286,
+    "last_content_update" : -2147483648,
+    "path" : "~/Documents/1_Recherche/mixOmics/Bioconductor/Bookdown/03-PCA.Rmd",
+    "project_path" : "03-PCA.Rmd",
+    "properties" : {
+        "cursorPosition" : "162,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

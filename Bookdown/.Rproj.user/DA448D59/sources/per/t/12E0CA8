@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1541108287103.000,
+    "dirty" : false,
+    "encoding" : "ISO-8859-1",
+    "folds" : "",
+    "hash" : "2132229589",
+    "id" : "12E0CA8",
+    "lastKnownWriteTime" : 1541108761,
+    "last_content_update" : 1541108761260,
+    "path" : "~/Documents/Packages/mixOmics/Workshops/2018/Vancouver/ShortVersion/Intro-short.Rnw",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "21,86",
+        "scrollLine" : "17"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "sweave"
+}

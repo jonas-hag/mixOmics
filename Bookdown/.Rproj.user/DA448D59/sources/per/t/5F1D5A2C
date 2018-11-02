@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1541108351459.000,
+    "dirty" : false,
+    "encoding" : "ISO-8859-1",
+    "folds" : "",
+    "hash" : "1343408463",
+    "id" : "5F1D5A2C",
+    "lastKnownWriteTime" : 1538610345,
+    "last_content_update" : 1538610345,
+    "path" : "~/Documents/Packages/mixOmics/Bioconductor/GIT/mixOmics/mixOmics/R/zzz.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "30,68",
+        "scrollLine" : "18"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

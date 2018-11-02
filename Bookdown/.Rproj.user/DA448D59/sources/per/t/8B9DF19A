@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1541107867958.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "366448376",
+    "id" : "8B9DF19A",
+    "lastKnownWriteTime" : 1541108697,
+    "last_content_update" : 1541108697096,
+    "path" : "~/Documents/Packages/mixOmics/Workshops/2018/Vancouver/ShortVersion/mixOmics-material-oneday.Rnw",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "1,12",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "sweave"
+}

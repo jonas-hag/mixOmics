@@ -1,0 +1,178 @@
+# Principal Component Analysis (PCA) {#pca}
+
+```{r echo=FALSE, message=FALSE}
+library(mixOmics)
+```
+
+## Biological question
+
+> *I would like to identify the trends or patterns in my data, experimental bias or, identify if my samples 'naturally' cluster according to the biological conditions...*
+
+## The liver.toxicity data set
+
+The `liver.toxicity` A list containing the following components:
+
+- `gene` data frame with 64 rows and 3116 columns. The expression measure of 3116 genes for the 64 subjects (rats).
+
+- `clinic` data frame with 64 rows and 10 columns, containing 10 clinical variables for the same 64 subjects.
+
+- `treatment` data frame with 64 rows and 4 columns, containing the treatment information on the 64 subjects, such as doses of acetaminophen and times of necropsies.
+
+- `gene.ID` data frame with 3116 rows and 2 columns, containing geneBank IDs and gene titles of the annotated genes.
+
+More details are available with `?liver.toxicity`.
+
+To illustrate PCA, we focus on the expression of the genes.
+
+## Principle of the method
+
+The aim of PCA [@Jol05] is to reduce the dimensionality of the data while retaining as much information as possible. 'Information' is referred here as *variance*. The idea is to create uncorrelated artificial variables called *principal components* (PCs) that combine in a linear manner the original (possibly correlated) variables (e.g. genes or metabolites).
+
+Dimension reduction is achieved by projecting the data into the space spanned by the principal components. In practice, it means that each sample is assigned a score on each new PC dimension - this score is calculated as a linear combination of the original variables to which a weight is applied. The weights of each of the original variables are stored in the so-called *loading vectors* associated to each Principal Component.
+
+The dimension of the data is reduced by projecting the data into the smaller subspace spanned by the PCs, while capturing the largest sources of variation between samples.
+
+The principal components are obtained by maximising the variance-covariance matrix of the data. To that end, we calculate the eigenvectors/eigenvalues of the variance-covariance matrix, often via singular value decomposition when the number of variables is very large. The data are usually centered (`center = TRUE`), and sometimes scaled (`scale = TRUE`) in the method. The latter is especially advised in the case where the variance is not homogeneous across variables.
+
+The first PC is defined as the linear combination of the original variables that explains the greatest amount of variation. The second PC is then defined as the linear combination of the original variables that accounts for the greatest amount of the remaining variation subject of being orthogonal (uncorrelated) to the first component. Subsequent components are defined likewise for the other PCA dimensions. The user must therefore report how much information is explained by the first PCs as these are used to graphically represent the PCA outputs.
+
+## Quick start
+
+```{r fig.show='hide'}
+data(liver.toxicity)
+X <- liver.toxicity$gene
+
+MyResult.pca <- pca(X)     # 1 Run the method
+plotIndiv(MyResult.pca)    # 2 Represent individuals
+plotVar(MyResult.pca)      # 3 Represent variables
+```
+
+Running the `pca` function with no arguments consists in using the default values that are, for the most important:
+
+- `ncomp=2`: the first two principal components are calculated  and can be used for graphical outputs;
+- `center = TRUE`: data are centered (mean=0)
+- `scale = FALSE`: data are not scaled (variance unchanged); turning to `scale=TRUE` implies unit variance.
+
+The two previous plots are not really useful: specific patterns on the individuals plot have to be investigated and the variable plot contains too many variables to be interpreted. Both graphics need to be improved to provide the user with meaningful information.
+
+## To go further
+
+### Customize plots
+
+Plots can be customized using numerous options in `plotIndiv` and `plotVar`. For instance, even if PCA is an unsupervised method, it can be relevant to add on the plot the information regarding the group of the samples and the associated legend. One can easily notice if the samples 'naturally' cluster according to the biological conditions.
+
+```{r eval=FALSE}
+plotIndiv(MyResult.pca, group = liver.toxicity$treatment$Dose.Group, 
+          legend = TRUE, title = 'Liver toxicity, genes, PCA comp 1 - 2')
+```
+
+Two factors can be displayed using both colors (argument `group`) and symbols (argument `pch`). Here, it is illustrated taking into account Dose and time of exposure.
+
+```{r}
+plotIndiv(MyResult.pca, ind.names = FALSE,
+          group = liver.toxicity$treatment$Dose.Group,
+          pch = as.factor(liver.toxicity$treatment$Time.Group),
+          legend = TRUE, title = 'Liver toxicity, genes, PCA comp 1 - 2',
+          legend.title = 'Dose', legend.title.pch = 'Exposure')
+```
+
+Using the information related to the dose and to the time of exposure enable to see some facts such as: the points on the left, in blue and orange, are samples with low doses (50 and 100). Samples with higher doses (1500 and 2000) in grey and green are more scattered and reveals a exposure effect (same symbols cluster together). 
+
+To display the results on other components, one can change the `comp` argument provided enough were calculated.
+
+```{r eval=FALSE}
+MyResult.pca2 <- pca(X, ncomp=3)
+plotIndiv(MyResult.pca2, comp=c(1,3), legend = TRUE,
+          group = liver.toxicity$treatment$Time.Group,
+          title = 'Multidrug transporter, PCA comp 1 - 3')
+```
+
+Here, the 3rd component (vertical)  hightlights a time of exposure effect.
+
+### Other meaningful plots
+
+The interpretation of variables plot can be easier having a look at the loadings. They are presented in decreasing order in absolute value from bottom to top. 
+
+```{r eval=FALSE}
+plotLoadings(MyResult.pca)
+```
+
+As many variables composed the data set, this representation is not very useful here, but it will be more informative once few variables are selected.
+
+Plots can also be displayed in 3 dimensions using the option `style="3d"`. Interactive facilities provided by the `rgl` package called by `mixOmics` can sometimes be helpful.
+
+```{r eval=FALSE}
+plotIndiv(MyResult.pca2,
+          group = liver.toxicity$treatment$Dose.Group, style="3d",
+          legend = TRUE, title = 'Liver toxicity, genes, PCA comp 1 - 2 - 3')
+```
+
+### Variable selection
+
+> *In addition to the biological question addressed by PCA, I would like to select the variables that contribute the most to the variance in the data set.*
+
+Variable selection can be performed using the sparse version of PCA implemented in the function `spca`. The user has to provide the number of variables to select on each principal component. Here, the first 10 variables the most important will be kept in each of the first 3 principal components. But the number of selected variables can also be different on each principal component (e.g. `keepX=c(15,10,5)`).
+
+```{r}
+MyResult.spca <- spca(X, ncomp=3, keepX=c(10,10,10))    # 1 Run the method
+# plotIndiv(MyResult.spca) not run here                 # 2 Represent individuals
+plotVar(MyResult.spca)                                  # 3 Represent variables
+```
+
+Variables can be extracted component by component using the `selectVar` function.
+
+```{r}
+MySelectedVar.spca.comp1 <- selectVar(MyResult.spca, comp=1)
+MySelectedVar.spca.comp1$name
+MySelectedVar.spca.comp1$value
+```
+
+The representation of loadings can complete the previous numerical outputs regarding the selected variables.
+
+```{r}
+plotLoadings(MyResult.spca)
+```
+
+```{r}
+MySelectedVar.spca.comp2 <- selectVar(MyResult.spca, comp=2)
+plotLoadings(MyResult.spca, comp = 2)
+```
+
+### Tuning parameters
+
+Regarding PCA, two parameters has to be tuned:
+
+- The number of components to retain and,
+- For the **sparse** version, the number of variables to select in each component.
+
+The function `tune.pca` computes the percentage of variance explained for each component. The 'optimal' number of components can be identified if an elbow appears on the screeplot.
+
+```{r eval=FALSE}
+tune.pca(X)
+```
+
+Regarding the number of variables to select in PCA, it seems usually more efficient to consider prior biological knowledge to set the number of variables to keep. In this method dedicated to unsupervised exploration, this seems to be the best way to deal with variable selection.
+
+### Other sources
+
+Other examples are provided at the end of the manual of the `pca` function. Run `example(pca)` to have a look  on them.
+
+Complements are also available on the mixOmics website <http://www.mixomics.org>, items **Methods** and **Case studies**.
+
+## FAQ
+
+* Should I scale my data before performing PCA? (`scale = TRUE`)
+    + Without scaling: a variable with high variance will solely drive
+the first principal component
+    + With scaling: one noisy variable with low variability will be
+assigned the same variance as other meaningful variables
+
+* Can I perform PCA with missing values?
+
+    NIPALS ( Non-linear Iterative PArtial Least Squares - implemented in mixOmics ) can impute missing values but must be built on many components. The proportion of NAs should not exceed 20% of total data.
+
+* When do we apply a multilevel decomposition?
+    + When the unique individuals are measured more than once
+    + When the individual variation < treatment / time variation samples from each unique individual tend to cluster
+    + When a multilevel vs no multilevel seems to visually make a difference on a PCA plot
+

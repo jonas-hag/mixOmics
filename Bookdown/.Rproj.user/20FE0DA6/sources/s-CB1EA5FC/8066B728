@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1534216122842.000,
+    "dirty" : false,
+    "encoding" : "ISO-8859-1",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "8066B728",
+    "lastKnownWriteTime" : 1534215606,
+    "last_content_update" : 1534215606,
+    "path" : "~/Documents/1_Recherche/mixOmics/Bioconductor/Bookdown/05-PLS.Rmd",
+    "project_path" : "05-PLS.Rmd",
+    "properties" : {
+        "cursorPosition" : "167,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

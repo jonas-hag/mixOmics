@@ -1,0 +1,73 @@
+# To get started {#start}
+
+## Installation
+First, install the latest \texttt{mixOmics} version:
+```{r, eval = FALSE}
+# in bioconductor:
+## try http:// if https:// URLs are not supported
+source("https://bioconductor.org/biocLite.R")
+biocLite('mixOmics')
+```
+
+The `mixOmics` package should directly import the following packages: `igraph, rgl, ellipse, corpcor, RColorBrewer, plyr, parallel, dplyr, tidyr, reshape2, methods, matrixStats, rARPACK, gridExtra`.
+
+## Load the package
+```{r}
+library(mixOmics)
+```
+
+Check that there is no error when loading the package. For *apple mac users*, if you are unable to install the imported library `rgl`, you will need to install the XQuartz software (<https://www.xquartz.org>) first.
+
+
+## Upload data
+The examples we give in this vignette use data that are already part of the package. To upload your own data, check first that your working directory is set, then read your data from a  `.txt` or `.csv` format, either by using **File > Import Dataset** in RStudio or via one of these command lines:
+
+```{r, eval = FALSE}
+# from csv file
+data <- read.csv("your_data.csv", row.names = 1, header = TRUE)
+
+# from txt file
+data <- read.table("your_data.txt", header = TRUE)
+```
+
+For more details about the arguments used to modify those functions, type `?read.csv` or `?read.table` in the R console.
+
+## Quick start
+
+For every methods implemented in `mixOmics`, the simplest workflow consists in:
+
+1. Run the method
+2. Represent individuals
+3. Represent variables
+
+Then think...
+
+For instance, with Principal Components Analysis:
+
+```{r}
+data(nutrimouse)
+X <- nutrimouse$gene
+
+MyResult.pca <- pca(X)  # 1 Run the method
+plotIndiv(MyResult.pca) # 2 Represent individuals
+plotVar(MyResult.pca)   # 3 Represent variables
+```
+
+Then many ways can be followed to get more information... One of the specificity of `mixOmics` consists in proposing variable selection associated to every methods. Omics data sets are relatively large and variable selection is often necessary to interpret the results of analysis. It can be performed in `mixOmics` using the sparse version of the methods.
+
+For instance, with Sparse Principal Components Analysis, the user has to specify the number of variables to be selected on each component. In the example below, 5 variables are selected on each of the first two components (`keepX=c(5,5)`). 
+
+```{r}
+MyResult.spca <- spca(X, keepX=c(5,5)) # 1 Run the method
+plotIndiv(MyResult.spca)               # 2 Represent individuals
+plotVar(MyResult.spca)                 # 3 Represent variables
+```
+
+This quick start can be highly enhanced in various ways :
+
+- having a look at the manual of each function used `?pca`, `?plotIndiv`... 
+
+- running the examples provided using the `example` function: `example(pca)`, `example(plotIndiv)`...
+
+- having a look at the mixomics web site <http://www.mixomics.org> items Methods and Case studies.
+

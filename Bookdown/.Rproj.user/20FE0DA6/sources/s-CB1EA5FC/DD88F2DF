@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1534216125567.000,
+    "dirty" : false,
+    "encoding" : "ISO-8859-1",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "DD88F2DF",
+    "lastKnownWriteTime" : 1534216884,
+    "last_content_update" : -2147483648,
+    "path" : "~/Documents/1_Recherche/mixOmics/Bioconductor/Bookdown/06-DIABLO.Rmd",
+    "project_path" : "06-DIABLO.Rmd",
+    "properties" : {
+        "cursorPosition" : "0,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

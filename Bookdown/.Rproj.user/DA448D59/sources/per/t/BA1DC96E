@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1541107908932.000,
+    "dirty" : false,
+    "encoding" : "ISO-8859-1",
+    "folds" : "",
+    "hash" : "4273503229",
+    "id" : "BA1DC96E",
+    "lastKnownWriteTime" : 1541108592,
+    "last_content_update" : 1541108592164,
+    "path" : "~/Documents/Packages/mixOmics/Workshops/2018/Vancouver/ShortVersion/Foreword-short.Rnw",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "16,16",
+        "scrollLine" : "14"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "sweave"
+}
